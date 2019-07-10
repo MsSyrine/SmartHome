@@ -13,13 +13,44 @@ var mongoose = require('mongoose'),
 var ProductSchema = new Schema({
   id_product: {
     type: String,
+    required: 'Please fill in a product UIK',
     index: {
       unique: true,
-      sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
+      sparse: true
     }
   },
-  image: {},
-  version: {},
-  description: {},
-  stock: {}
+  product_name: {
+    type: String,
+    unique: 'Product name already exists',
+    required: 'Please fill in a product name',
+    trim: true,
+    default: ''
+  },
+  image: {
+    type: String,
+    required: 'Please upload a product image',
+    trim: true},
+  version: {
+    type: String,
+    required: 'Please fill in a product version',
+    trim: true},
+  description: {
+    type: String,
+    required: 'Please fill in a product description'
+    },
+  stock: {
+    type: Number,
+    required: 'Please fill in a product stock'
+  },
+  price: {
+    type: Number,
+    required: 'Please fill in a product price',
+  },
+  updated: {
+    type: Date
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  }
 })
