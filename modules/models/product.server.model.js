@@ -5,7 +5,6 @@
  */
 var mongoose = require('mongoose'),
   path = require('path'),
-  config = require(path.resolve('./config/config')),
   Schema = mongoose.Schema,
 
 var ProductSchema = new Schema({
