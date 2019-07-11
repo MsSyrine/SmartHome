@@ -43,6 +43,7 @@ var ProductSchema = new Schema({
   },
   price: {
     type: Number,
+    min : 0,
     required: 'Please fill in a product price',
   },
   updated: {
