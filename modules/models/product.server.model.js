@@ -39,12 +39,23 @@ var ProductSchema = new Schema({
   },
   stock: {
     type: Number,
-    required: 'Please fill in a product stock'
+    required: 'Please fill in a product stock',
+    validate: {
+      validator: function (price) {
+        return price <= 0;
+      },
+      message: 'stock must be set at a higher figure than 0'
+    }
   },
   price: {
     type: Number,
-    min : 0,
     required: 'Please fill in a product price',
+    validate: {
+      validator: function (price) {
+        return price <= 0;
+      },
+      message: 'Price must be set at a higher figure than 0'
+    }
   },
   updated: {
     type: Date
