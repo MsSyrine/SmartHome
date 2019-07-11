@@ -7,8 +7,6 @@ var mongoose = require('mongoose'),
   path = require('path'),
   config = require(path.resolve('./config/config')),
   Schema = mongoose.Schema,
-  validator = require('validator'),
-  chalk = require('chalk');
 
 var ProductSchema = new Schema({
   id_product: {
@@ -29,15 +27,17 @@ var ProductSchema = new Schema({
   image: {
     type: String,
     required: 'Please upload a product image',
-    trim: true},
+    trim: true
+  },
   version: {
     type: String,
     required: 'Please fill in a product version',
-    trim: true},
+    trim: true
+  },
   description: {
     type: String,
     required: 'Please fill in a product description'
-    },
+  },
   stock: {
     type: Number,
     required: 'Please fill in a product stock'
@@ -53,4 +53,4 @@ var ProductSchema = new Schema({
     type: Date,
     default: Date.now
   }
-})
+});
