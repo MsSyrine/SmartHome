@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
-  ProductModel = require('product')
+  ProductModel = require('./product.server.model'),
+
 
 var SceneSchema = new Schema({
   id_scene: {
@@ -19,16 +20,16 @@ var SceneSchema = new Schema({
     scene_element: [{
       action: {
         type: String,
-        required : 'Fill in a scene action'
+        required: 'Fill in a scene action'
       },
       timestamp: {
         type: Date,
-        required : 'Fill in a scene action'
+        required: 'Fill in a scene action'
       }
       ],
     product: {
       type: ProductModel.product,
-      required :'Fill in a product'
+      required: 'Fill in a product'
     }
   }
-})
+});

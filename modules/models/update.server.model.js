@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
-  ProductModel = require('product')
+  ProductModel = require('./product.server.model'),
 
 var UpdateSchema = new Schema({
   id_update: {
@@ -28,10 +28,12 @@ var UpdateSchema = new Schema({
   },
   author: {
     Type: String,
-    required: 'Fill in an update author'},
+    required: 'Fill in an update author'
+  },
   description: {
     Type: String,
-    required: 'Fill in an update description'},
+    required: 'Fill in an update description'
+  },
   data: {
     Type: String,
     required: 'upload the update'
@@ -41,4 +43,4 @@ var UpdateSchema = new Schema({
     type: ProductModel,
     require: 'Fill in a product'
   }
-})
+});
