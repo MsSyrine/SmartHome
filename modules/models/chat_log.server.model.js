@@ -17,5 +17,21 @@ var ChatSchema = new Schema({
       unique: true,
 	  sparse : true 
     }
+  },
+  message: {
+    type: String,
+    default : 'Default message here - INOTEK '
+  },
+  message_date: {
+    type: Date,
+    default: Date.now
+  },
+  sender: {
+    type: UserModel,
+	default : null
+  },
+  receiver: {
+    type: UserModel,
+	default : null
   }
 })
