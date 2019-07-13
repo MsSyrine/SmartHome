@@ -32,5 +32,6 @@ var HomeSchema = new Schema({
     },
     period: {
       type: Date
-    }]
+    }
+}]
 });

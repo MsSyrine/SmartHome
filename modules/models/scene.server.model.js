@@ -26,7 +26,7 @@ var SceneSchema = new Schema({
         type: Date,
         required: 'Fill in a scene action'
       }
-      ],
+    }],
     product: {
       type: ProductModel.product,
       required: 'Fill in a product'
