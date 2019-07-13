@@ -1,0 +1,1 @@
+Empty Project with current dependencies ( Mongoose , Bower , Gulp ) 
