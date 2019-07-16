@@ -33,3 +33,7 @@ var SceneSchema = new Schema({
     }
   }
 });
+
+var scene = mongoose.model('Scene', SceneSchema);
+ 
+module.exports = scene;

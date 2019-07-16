@@ -65,3 +65,9 @@ var ProductSchema = new Schema({
     default: Date.now
   }
 });
+
+
+var product = mongoose.model('Product', ProductSchema);
+ 
+module.exports = product;
+

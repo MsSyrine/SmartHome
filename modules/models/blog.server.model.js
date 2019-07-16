@@ -50,3 +50,7 @@ var BlogSchema = new Schema({
     required: 'Fill in a post author'
   }
 });
+
+var  blog = mongoose.model('Blog', BlogSchema);
+ 
+module.exports = blog;
