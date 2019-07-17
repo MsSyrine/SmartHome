@@ -4,11 +4,8 @@ var defaultEnvConfig = require('./default');
 
 module.exports = {
   db: {
-<<<<<<< HEAD
     uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/InoHome_dev',
-=======
     uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/InoHome_dB_test',
->>>>>>> bf3dfe75c94ca17dccc709838355cd68232f467b
     options: {},
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
