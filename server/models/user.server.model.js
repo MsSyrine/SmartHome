@@ -64,10 +64,10 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your last name']
   },
-  displayName: {
+ /*  displayName: {
     type: String,
     trim: true
-  },
+  }, */
   email: {
     type: String,
     index: {
@@ -107,9 +107,9 @@ var UserSchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['user', 'admin']
+      enum: ['client', 'community_manager' ,'admin']
     }],
-    default: ['user'],
+    default: ['client'],
     required: 'Please provide at least one role'
   },
   updated: {
@@ -298,6 +298,7 @@ function seed(doc, options) {
           .then(function (passphrase) {
             var user = new User(doc);
 
+            
             user.provider = 'local';
             user.displayName = user.firstName + ' ' + user.lastName;
             user.password = passphrase;
@@ -322,6 +323,6 @@ function seed(doc, options) {
 }
 
 
-var user = mongoose.model('User', UserSchema);
+/* var user = mongoose.model('User', UserSchema);
  
-module.exports = user;
+module.exports = user; */
