@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\modules",
+    "\\modules\\articles",
+    "\\modules\\chat",
+    "\\modules\\models",
+    "\\modules\\users",
+    "\\modules\\users\\server",
+    "\\modules\\users\\server\\config",
+    "\\modules\\users\\server\\controllers",
+    "\\modules\\users\\server\\policies"
+  ],
+  "SelectedNode": "\\modules",
+  "PreviewInSolutionExplorer": false
+}
