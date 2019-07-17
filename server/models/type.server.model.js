@@ -23,3 +23,7 @@ var TypeDeviceSchema = new Schema({
     required: 'Fill in a type device name'
   }
 });
+
+var type= mongoose.model('Type', TypeDeviceSchema);
+ 
+module.exports = type;

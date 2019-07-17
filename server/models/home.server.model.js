@@ -35,3 +35,7 @@ var HomeSchema = new Schema({
     }
 }]
 });
+
+var  home = mongoose.model('Home', HomeSchema);
+ 
+module.exports = home;

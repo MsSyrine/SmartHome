@@ -320,3 +320,8 @@ function seed(doc, options) {
 
   });
 }
+
+
+var user = mongoose.model('User', UserSchema);
+ 
+module.exports = user;

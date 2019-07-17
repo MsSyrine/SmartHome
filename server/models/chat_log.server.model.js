@@ -35,3 +35,6 @@ var ChatSchema = new Schema({
 	default : null
   }
 })
+var  chat = mongoose.model('Chat', ChatSchema);
+ 
+module.exports = chat;

@@ -44,3 +44,7 @@ var UpdateSchema = new Schema({
     require: 'Fill in a product'
   }
 });
+
+var update = mongoose.model('Update', UpdateSchema);
+ 
+module.exports = update;
