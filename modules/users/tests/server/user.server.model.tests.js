@@ -260,15 +260,15 @@ describe('User Model Unit Tests:', function () {
       var _user1 = new User(user1);
 
       User.generateRandomPassphrase()
-    .then(function (password) {
-      _user1.password = password;
-      _user1.validate(function (err) {
-        should.not.exist(err);
-      });
-    })
-     .catch(function (err) {
-      should.not.exist(err);
-    });
+        .then(function (password) {
+          _user1.password = password;
+          _user1.validate(function (err) {
+            should.not.exist(err);
+          });
+        })
+        .catch(function (err) {
+          should.not.exist(err);
+        });
 
     });
 
@@ -484,7 +484,6 @@ describe('User Model Unit Tests:', function () {
 
     it('should not allow space characters in email address - "abc def@abc.com"', function (done) {
       var _user1 = new User(user1);
-
       _user1.email = 'abc def@abc.com';
       _user1.save(function (err) {
         if (!err) {

@@ -19,12 +19,12 @@ module.exports = function (config) {
     ]
   },
   function (req, accessToken, refreshToken, profile, done) {
-  // Set the provider data and include tokens
+    // Set the provider data and include tokens
     var providerData = profile._json;
     providerData.accessToken = accessToken;
     providerData.refreshToken = refreshToken;
 
-  // Create the user OAuth profile
+    // Create the user OAuth profile
     var providerUserProfile = {
       firstName: profile.name.givenName,
       lastName: profile.name.familyName,
