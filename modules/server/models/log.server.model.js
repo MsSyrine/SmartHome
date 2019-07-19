@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
   DeviceModel = require('./device.server.model'),
-  UserModel = require('./user.server.model'),
+  UserModel = require('./user.server.model')
 
 var LogSchema = new Schema({
   id_log: {
@@ -19,11 +19,11 @@ var LogSchema = new Schema({
       sparse: true
     }
   },
-  device: {
-    type: DeviceModel
+  device: {type: Schema.Types.ObjectId, 
+    ref: "Device" 
   },
-  user: {
-    type: UserModel
+  user: {type: Schema.Types.ObjectId, 
+    ref: "User" 
   },
   log_date: {
     type: Date,
@@ -40,6 +40,5 @@ var LogSchema = new Schema({
 
 });
 
-var log = mongoose.model('Log', LogSchema);
  
-module.exports = log;
+module.exports =  mongoose.model('Log', LogSchema);

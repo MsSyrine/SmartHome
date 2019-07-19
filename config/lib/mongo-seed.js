@@ -15,16 +15,19 @@ function start(seedConfig) {
     var collections = seedConfig.collections || (config.seedDB ? _.clone(config.seedDB.collections, true) : []);
 
     if (!collections.length) {
+      //if not empty
       return resolve();
     }
-
+    //seeds = collections.filter(collection.model)
+    //seeds is an array
     var seeds = collections
       .filter(function (collection) {
         return collection.model;
       });
 
     // Use the reduction pattern to ensure we process seeding in desired order.
-    seeds.reduce(function (p, item) {
+   // reduce method arguments:  p total , item is the current value
+    seeds.reduce(function (p , item) {
       return p.then(function () {
         return seed(item, options);
       });

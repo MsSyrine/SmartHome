@@ -4,9 +4,10 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
+  UserModel = require('./user.server.model'),
   path = require('path'),
-  Schema = mongoose.Schema,
-  UserModel = require('./user.server.model')
+  Schema = mongoose.Schema
+
 
 var BlogSchema = new Schema({
   id_post: {
@@ -36,8 +37,8 @@ var BlogSchema = new Schema({
   shares: {
     type: Number
   },
-  likes: [{ type: UserModel }],
-  comments: [{ type: UserModel }, { type: String ,}, { type: Date, default : Date.now}],
+  likes:  {type: Schema.Types.ObjectId, ref: "User"} ,
+  comments: [ {type: Schema.Types.ObjectId, ref: "User"}, { type: String ,}, { type: Date, default : Date.now}],
   updated: {
     type: Date
   },
@@ -45,12 +46,13 @@ var BlogSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  author: {
-    type: UserModel,
+  author:  {type: Schema.Types.ObjectId, ref: "User" ,
     required: 'Fill in a post author'
   }
 });
 
-var  blog = mongoose.model('Blog', BlogSchema);
  
-module.exports = blog;
+module.exports = mongoose.model('Blog', BlogSchema);
+
+
+//must complete the seeds for the blog
