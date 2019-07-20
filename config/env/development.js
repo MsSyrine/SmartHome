@@ -4,7 +4,7 @@ var defaultEnvConfig = require('./default');
 
 module.exports = {
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/InoHome_dev',
+    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/InoHome',
     options: {},
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
@@ -70,20 +70,20 @@ module.exports = {
   seedDB: {
     seed: process.env.MONGO_SEED === 'true',
     options: {
-      logResults: process.env.MONGO_SEED_LOG_RESULTS !== 'false'
+      logResults: process.env.MONGO_SEED_LOG_RESULTS !== 'true'
     },
     // Order of collections in configuration will determine order of seeding.
     // i.e. given these settings, the User seeds will be complete before
     // Article seed is performed.
     collections: [{
-      model: 'User',
+      model: 'user',
       docs: [{
         data: {
           username: 'local-admin',
           email: 'admin@localhost.com',
           firstName: 'Admin',
           lastName: 'Local',
-          roles: ['admin', 'user']
+          roles: ['admin', 'client' ,'community_manager']
         }
       }, {
         // Set to true to overwrite this document

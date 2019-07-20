@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
-  UserModel = require('./user.server.model'),
+  UserModel = require('./user.server.model')
 
 var ChatSchema = new Schema({
   chat_id: {
@@ -27,14 +27,14 @@ var ChatSchema = new Schema({
     default: Date.now
   },
   sender: {
-    type: UserModel,
+    type: Schema.Types.ObjectId, ref: 'User',
 	default : null
   },
   receiver: {
-    type: UserModel,
+    type: Schema.Types.ObjectId, ref: 'User',
 	default : null
   }
 })
-var  chat = mongoose.model('Chat', ChatSchema);
  
-module.exports = chat;
+module.exports = mongoose.model('Chat', ChatSchema);
+ //must complete the seeds for the chat log

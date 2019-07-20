@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
-  ProductModel = require('./product.server.model'),
+  ProductModel = require('./product.server.model')
 
 var UpdateSchema = new Schema({
   id_update: {
@@ -23,28 +23,29 @@ var UpdateSchema = new Schema({
     default: Date.now
   },
   version: {
-    Type: String,
+    type: String,
     required: 'Fill in an update version'
   },
   author: {
-    Type: String,
+    type: String,
     required: 'Fill in an update author'
   },
   description: {
-    Type: String,
+    type: String,
     required: 'Fill in an update description'
   },
   data: {
-    Type: String,
+    type: String,
     required: 'upload the update'
   },
   product:
-  {
-    type: ProductModel,
+  {type: Schema.Types.ObjectId, 
+    ref: "Product" ,
     require: 'Fill in a product'
   }
 });
-
-var update = mongoose.model('Update', UpdateSchema);
  
-module.exports = update;
+ 
+module.exports = mongoose.model('Update', UpdateSchema);
+
+//must complete the seeds for an update to be added
