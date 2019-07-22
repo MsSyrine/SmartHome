@@ -8,7 +8,7 @@ module.exports = function (app) {
   app.route('/api/product/update'.put(ProductController.UpdateProduct));
   app.route('/api/product/delete').delete(ProductController.DeleteProduct);
   app.route('/api/product').get(ProductController.ListProduct);
-  app.route('api/product/:id').get(ProductController.FindProductByID);
+  app.route('/api/product/:id').get(ProductController.FindProductByID);
 
 
   app.param('userId', users.userByID);
