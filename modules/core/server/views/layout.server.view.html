@@ -59,7 +59,7 @@
 
   <!--Embedding The User Object-->
   <script type="text/javascript">
-    var user = {{{ user }}};
+    var user = "{{ user }}";
     var env = "{{ env }}";
   </script>
 
@@ -71,7 +71,7 @@
   
   <!--owasp config sync-->
   <script type="text/javascript">
-    var sharedConfig = {{{ sharedConfig }}};
+    var sharedConfig = "{{ sharedConfig }}";
     owaspPasswordStrengthTest.config(sharedConfig.owasp);
   </script>
 
