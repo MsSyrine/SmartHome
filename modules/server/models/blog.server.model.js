@@ -51,8 +51,103 @@ var BlogSchema = new Schema({
   }
 });
 
- 
+BlogSchema.statics.seed = seed;
 module.exports = mongoose.model('Blog', BlogSchema);
 
 
 //must complete the seeds for the blog
+
+function seed(doc, options) {
+  var Blog = mongoose.model('Blog');
+
+  return new Promise(function (resolve, reject) {
+
+    skipDocument()
+      .then(findAdminUser)
+      .then(add)
+      .then(function (response) {
+        return resolve(response);
+      })
+      .catch(function (err) {
+        return reject(err);
+      });
+
+    function findAdminUser(skip) {
+      var User = mongoose.model('User');
+
+      return new Promise(function (resolve, reject) {
+        if (skip) {
+          return resolve(true);
+        }
+
+        User
+          .findOne({
+            roles: { $in: ['admin'] }
+          })
+          .exec(function (err, admin) {
+            if (err) {
+              return reject(err);
+            }
+
+            doc.user = admin;
+
+            return resolve();
+          });
+      });
+    }
+
+    function skipDocument() {
+      return new Promise(function (resolve, reject) {
+        Article
+          .findOne({
+            title: doc.title
+          })
+          .exec(function (err, existing) {
+            if (err) {
+              return reject(err);
+            }
+
+            if (!existing) {
+              return resolve(false);
+            }
+
+            if (existing && !options.overwrite) {
+              return resolve(true);
+            }
+
+            // Remove Blog (overwrite)
+
+            existing.remove(function (err) {
+              if (err) {
+                return reject(err);
+              }
+
+              return resolve(false);
+            });
+          });
+      });
+    }
+
+    function add(skip) {
+      return new Promise(function (resolve, reject) {
+        if (skip) {
+          return resolve({
+            message: chalk.yellow('Database Seeding: Blog \t' + doc.title + ' skipped')
+          });
+        }
+
+        var blog = new Blog(doc);
+
+        blog.save(function (err) {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve({
+            message: 'Database Seeding: Blog\t' + blog.title + ' added'
+          });
+        });
+      });
+    }
+  });
+}
