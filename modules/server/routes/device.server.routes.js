@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
   var ProductController = require('../controllers/device.server.controller');
-  var users = require('../controllers/users.server.controller');
+  var users = require('../../users/server/controllers/users.server.controller');
 
   app.route('/api/device/add').post(deviceController.AddDevice);
   app.route('/api/device/update'.put(deviceController.UpdateDevice));

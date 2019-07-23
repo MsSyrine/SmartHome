@@ -27,20 +27,20 @@ var DeviceSchema = new Schema({
     type: String,
     required: 'Fill in an update version'
   },
-  product: {type: Schema.Types.ObjectId, 
-    ref: "Product" 
+  product: {type: Schema.Types.ObjectId,
+    ref: "Product"
   },
-  home: {type: Schema.Types.ObjectId, 
+  home: {type: Schema.Types.ObjectId,
     ref: "Home" ,
     required: 'Fill in a device home'
   },
-  type_device: {type: Schema.Types.ObjectId, 
-    ref: "Type" 
+  type_device: {type: Schema.Types.ObjectId,
+    ref: "Type"
   }
 });
 
- 
- 
+
+DeviceSchema.statics.seed = seed;
 module.exports =  mongoose.model('Device', DeviceSchema);
 
 
