@@ -5,19 +5,48 @@
  */
 var path = require('path'),
     mongoose = require('mongoose'),
-    BlogModel = mongoose.model('Blogs');
+    BlogModel = mongoose.model('Blog'),
+    UserModel = mongoose.model('User');
+const CircularJSON = require('circular-json');
 
 exports.AddBlog = function (req, res) {
-  var Blog = new BlogModel ({
+ var User_test = new UserModel(UserModel.findOne({username: "outail619"}, function(err, doc) {
+    if (!err) { res.send(CircularJSON.stringify(doc)) }
+    else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
+  }));
+  console.log(' ORZEN YE KHRA');
+  console.log(User_test instanceof UserModel);
+  console.log(User_test._id);
+  /*var User = new UserModel({
+    firstname : "Syrine",
+    lastname : "Ben aziza",
+    email : "test@inotek.tn",
+    username : "Outail",
+    provider : 'local',
+    roles : ['client']
+    });
+    User.save();*/
+  var Blog_test = new BlogModel({
+    id_post : 2,
+    title : "test",
+    brief : "test brief",
+    description : "maha2ah",
+    author : User_test._id
+  });
+  Blog_test.save((err, doc) => {
+    if (!err) { res.send(doc); }
+    else { console.log('Error in Blog Save :' + JSON.stringify(err, undefined, 2)); }
+  });
+  /*var Blog = new BlogModel ({
     title : req.body.title,
     brief : req.body.brief,
     description : req.body.description,
-    image : req.body.image,
+    image : req.body.image
       });
       Blog.save((err, doc) => {
         if (!err) { res.send(doc); }
         else { console.log('Error in Blog Save :' + JSON.stringify(err, undefined, 2)); }
-      });
+      });*/
 }
 
 exports.UpdateBlog = function (req, res){
