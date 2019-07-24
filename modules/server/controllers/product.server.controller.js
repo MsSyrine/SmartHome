@@ -7,7 +7,7 @@ var path = require('path'),
     mongoose = require('mongoose'),
     ProductModel = mongoose.model('Product');
 
-exports.AddProduct = function (req, res) {
+exports.create_a_product = function (req, res) {
   var product = new ProductModel ({
     id_product : req.body.id_product,
     product_name : req.body.product_name,
@@ -23,7 +23,7 @@ exports.AddProduct = function (req, res) {
   });
 }
 
-exports.UpdateProduct = function (req,res){
+exports.update_a_product = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
@@ -42,7 +42,7 @@ exports.UpdateProduct = function (req,res){
     });
 }
 
-exports.DeleteProduct = function (req,res){
+exports.delete_a_product = function (req,res){
   if (!ObjectId.isValid(req.params.id))
   return res.status(400).send(`No record with given id : ${req.params.id}`);
 
@@ -52,14 +52,14 @@ exports.DeleteProduct = function (req,res){
 });
 }
 
-exports.ListProduct = function (req,res){
+exports.list_products = function (req,res){
   ProductModel.find((err, docs) => {
     if (!err) { res.send(docs); }
     else { console.log('Error in Retriving products :' + JSON.stringify(err, undefined, 2)); }
   });
 }
 
-exports.FindProductByID = function (req,res){
+exports.find_a_product_by_id = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 

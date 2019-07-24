@@ -4,11 +4,14 @@ module.exports = function (app) {
   var ProductController = require('../controllers/product.server.controller');
   var users = require('../controllers/users.server.controller');
 
-  app.route('/api/product/add').post(ProductController.AddProduct);
-  app.route('/api/product/update'.put(ProductController.UpdateProduct));
-  app.route('/api/product/delete').delete(ProductController.DeleteProduct);
-  app.route('/api/product').get(ProductController.ListProduct);
-  app.route('/api/product/:id').get(ProductController.FindProductByID);
+  app.route('/api/products')
+  .get(ProductController.list_products)
+  .post(ProductController.create_a_product);
+
+  app.route('/api/products/:id')
+  .put(PoductController.update_a_product)
+  .delete(ProductController.delete_a_product)
+  .get(ProductController.find_a_product_by_id);
 
 
   app.param('userId', users.userByID);

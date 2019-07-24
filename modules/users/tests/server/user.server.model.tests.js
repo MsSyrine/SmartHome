@@ -25,7 +25,7 @@ describe('User Model Unit Tests:', function () {
     user1 = {
       firstName: 'Full',
       lastName: 'Name',
-      displayName: 'Full Name',
+      // displayName: 'Full Name',
       email: 'test@test.com',
       username: 'username',
       password: 'M3@n.jsI$Aw3$0m3',
@@ -36,7 +36,7 @@ describe('User Model Unit Tests:', function () {
     user3 = {
       firstName: 'Different',
       lastName: 'User',
-      displayName: 'Full Different Name',
+      /* displayName: 'Full Different Name', */
       email: 'test3@test.com',
       username: 'different_username',
       password: 'Different_Password1!',

@@ -5,9 +5,10 @@
  */
 var path = require('path'),
     mongoose = require('mongoose'),
-    deviceModel = mongoose.model('device');
+    deviceModel = mongoose.model('Device');
+    userModel = mongoose.model('User');
 
-exports.AddDevice = function (req, res) {
+exports.create_a_device = function (req, res) {
   var device = new deviceModel ({
     mac_address: req.body.mac_address,
     serial_id: req.body.serial_id,
@@ -23,7 +24,7 @@ exports.AddDevice = function (req, res) {
   });
 }
 
-exports.UpdateDevice = function (req,res){
+exports.update_a_device = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
@@ -42,7 +43,7 @@ exports.UpdateDevice = function (req,res){
     });
 }
 
-exports.DeleteDevice = function (req,res){
+exports.delete_a_device = function (req,res){
   if (!ObjectId.isValid(req.params.id))
   return res.status(400).send(`No record with given id : ${req.params.id}`);
 
@@ -52,14 +53,14 @@ exports.DeleteDevice = function (req,res){
 });
 }
 
-exports.ListDevice = function (req,res){
+exports.list_all_devices = function (req,res){
   deviceModel.find((err, docs) => {
     if (!err) { res.send(docs); }
     else { console.log('Error in Retriving devices :' + JSON.stringify(err, undefined, 2)); }
   });
 }
 
-exports.FindDeviceByID = function (req,res){
+exports.find_a_device = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
@@ -68,3 +69,4 @@ exports.FindDeviceByID = function (req,res){
         else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
     });
 }
+

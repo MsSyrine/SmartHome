@@ -106,7 +106,7 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Type\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Type\t' + doc.name_type + ' skipped')
           });
         }
 
@@ -118,7 +118,7 @@ function seed(doc, options) {
           }
 
           return resolve({
-            message: 'Database Seeding: Type\t' + Type.title + ' added'
+            message: 'Database Seeding: Type\t' + Type.name_type + ' added'
           });
         });
       });

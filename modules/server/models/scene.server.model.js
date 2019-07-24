@@ -117,7 +117,7 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Scene\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Scene\t' + doc.id_scene + ' skipped')
           });
         }
 
@@ -129,7 +129,7 @@ function seed(doc, options) {
           }
 
           return resolve({
-            message: 'Database Seeding: Scene\t' + Scene.title + ' added'
+            message: 'Database Seeding: Scene\t' + Scene.id_scene + ' added'
           });
         });
       });

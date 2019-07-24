@@ -4,9 +4,9 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  path = require('path'),
-  Schema = mongoose.Schema,
-  UserModel = require('./user.server.model')
+ // path = require('path'),
+  Schema = mongoose.Schema;
+ // UserModel = require('./user.server.model')
 
 var HomeSchema = new Schema({
   id_home: {
@@ -20,7 +20,9 @@ var HomeSchema = new Schema({
     }
   },
   owners: [{
-    user: {type: Schema.Types.ObjectId, ref: "User" ,
+    user: {
+      type: Schema.Types.ObjectId, 
+      ref: "User" ,
       required: 'Fill in an owner'
     },
     priority: {
@@ -37,6 +39,7 @@ var HomeSchema = new Schema({
  
  
 module.exports = mongoose.model('Home', HomeSchema);
+
 
 //seed functions To be verified !
 /**
@@ -118,7 +121,7 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Home\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Home\t' + doc.id_home + ' skipped')
           });
         }
 
@@ -130,10 +133,42 @@ function seed(doc, options) {
           }
 
           return resolve({
-            message: 'Database Seeding: Home\t' + Home.title + ' added'
+            message: 'Database Seeding: Home\t' + Home.id_home + ' added'
           });
         });
       });
     }
   });
 }
+
+var Home = mongoose.model('Home', HomeSchema);
+
+//Functions for Searching for and Updating Data
+
+
+/* Home.find({
+  owners: [{
+    user: {
+      type: Schema.Types.ObjectId, 
+      ref: "User" ,
+    
+    },
+    priority: {
+      type: "high",
+      default: '0'
+    },
+    period: 03/03/2019
+}]
+}).exec(function(err, home) {
+  if (err) throw err;
+   
+  console.log(home);
+}); */
+
+// Mongoose will convert `_id` from a string to an ObjectId
+// into a number, or throw an error if it failed to convert the value.
+/* Home.find({ _id: res[0]._id.toHexString()});
+ */
+
+
+module.exports = Home;
