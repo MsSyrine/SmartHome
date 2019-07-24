@@ -34,7 +34,7 @@ exports.homeByID = function (req, res, next, id) {
     });
   };  
 
-
+/* 
 exports.find_devices_by_home_id = function (req,res){
     if (!ObjectId.isValid(req.params.id))
           return res.status(400).send(`No record with given home id : ${req.params.id}`);
@@ -43,4 +43,4 @@ exports.find_devices_by_home_id = function (req,res){
           if (!err) { res.send(doc); }
           else { console.log('Error in Retriving thed home record:' + JSON.stringify(err, undefined, 2)); }
       });
-  }
+  } */

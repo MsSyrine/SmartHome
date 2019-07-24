@@ -59,7 +59,7 @@ exports.UpdateBlog = function (req, res){
     description : req.body.description,
     image : req.body.image,
   });
-  BlogModel.findByIdAndUpdate(req.params.id, { $set: Blog }, { new: true }, (err, doc) => {
+  BlogModel.findByIdAndUpdate(req.params.id, { $set: Blog }, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Blog Update :' + JSON.stringify(err, undefined, 2)); }
   });
