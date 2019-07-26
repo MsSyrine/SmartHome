@@ -83,7 +83,7 @@ module.exports = {
           email: 'admin@localhost.com',
           firstName: 'Admin',
           lastName: 'Local',
-          roles: ['admin', 'client' ,'community_manager']
+          roles: ['admin', 'client', 'community_manager']
         }
       }, {
         // Set to true to overwrite this document

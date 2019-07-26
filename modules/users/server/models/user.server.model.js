@@ -107,9 +107,9 @@ var UserSchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['user', 'admin']
+      enum: ['client', 'community_manager', 'admin']
     }],
-    default: ['user'],
+    default: ['client'],
     required: 'Please provide at least one role'
   },
   updated: {
@@ -294,24 +294,22 @@ function seed(doc, options) {
           });
         }
 
-        User.generateRandomPassphrase()
-          .then(function (passphrase) {
-            var user = new User(doc);
+        User.generateRandomPassphrase().then(function (passphrase) {
+          var user = new User(doc);
+          user.provider = 'local';
+          user.displayName = user.firstName + ' ' + user.lastName;
+          user.password = passphrase;
 
-            user.provider = 'local';
-            user.displayName = user.firstName + ' ' + user.lastName;
-            user.password = passphrase;
+          user.save(function (err) {
+            if (err) {
+              return reject(err);
+            }
 
-            user.save(function (err) {
-              if (err) {
-                return reject(err);
-              }
-
-              return resolve({
-                message: 'Database Seeding: User\t\t' + user.username + ' added with password set to ' + passphrase
-              });
+            return resolve({
+              message: 'Database Seeding: User\t\t' + user.username + ' added with password set to ' + passphrase
             });
-          })
+          });
+        })
           .catch(function (err) {
             return reject(err);
           });
@@ -320,3 +318,5 @@ function seed(doc, options) {
 
   });
 }
+
+module.exports = mongoose.model('User', UserSchema);

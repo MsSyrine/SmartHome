@@ -4,46 +4,35 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  path = require('path'),
+  chalk = require('chalk'),
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  title: {
+var TypeDeviceSchema = new Schema({
+  id_type: {
     type: String,
-    default: '',
+    required: 'Fill in a type device ID',
+    lowercase: true,
     trim: true,
-    required: 'Title cannot be blank'
+    index: {
+      unique: true,
+      sparse: true
+    }
   },
-  content: {
+  name_type: {
     type: String,
-    default: '',
-    trim: true
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
+    required: 'Fill in a type device name'
   }
 });
 
-ArticleSchema.statics.seed = seed;
-
-mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Type', TypeDeviceSchema);
 
 /**
-* Seeds the User collection with document (Article)
+* Seeds the User collection with document (Type)
 * and provided options.
 */
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Type = mongoose.model('Type');
 
   return new Promise(function (resolve, reject) {
 
@@ -83,7 +72,7 @@ function seed(doc, options) {
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {
-        Article
+        Type
           .findOne({
             title: doc.title
           })
@@ -100,7 +89,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Type (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,19 +106,19 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Type\t' + doc.name_type + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var Type = new Type(doc);
 
-        article.save(function (err) {
+        Type.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Type\t' + Type.name_type + ' added'
           });
         });
       });

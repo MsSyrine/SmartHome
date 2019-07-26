@@ -4,46 +4,77 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  path = require('path'),
+  chalk = require('chalk'),
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
+var ProductSchema = new Schema({
+  id_product: {
+    type: String,
+    required: 'Please fill in a product UIK',
+    index: {
+      unique: true,
+      sparse: true
+    }
+  },
+  product_name: {
+    type: String,
+    unique: 'Product name already exists',
+    required: 'Please fill in a product name',
+    trim: true,
+    default: ''
+  },
+  image: {
+    type: String,
+    required: 'Please upload a product image',
+    trim: true
+  },
+  version: {
+    type: String,
+    required: 'Please fill in a product version',
+    trim: true
+  },
+  description: {
+    type: String,
+    required: 'Please fill in a product description'
+  },
+  stock: {
+    type: Number,
+    required: 'Please fill in a product stock',
+    validate: {
+      validator: function (price) {
+        return price <= 0;
+      },
+      message: 'stock must be set at a higher figure than 0'
+    }
+  },
+  price: {
+    type: Number,
+    required: 'Please fill in a product price',
+    validate: {
+      validator: function (price) {
+        return price <= 0;
+      },
+      message: 'Price must be set at a higher figure than 0'
+    }
+  },
+  updated: {
+    type: Date
+  },
   created: {
     type: Date,
     default: Date.now
-  },
-  title: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
-  },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
   }
 });
 
-ArticleSchema.statics.seed = seed;
-
-mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Product', ProductSchema);
 
 /**
-* Seeds the User collection with document (Article)
+* Seeds the User collection with document (Product)
 * and provided options.
 */
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Product = mongoose.model('Product');
 
   return new Promise(function (resolve, reject) {
 
@@ -83,7 +114,7 @@ function seed(doc, options) {
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {
-        Article
+        Product
           .findOne({
             title: doc.title
           })
@@ -100,7 +131,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Product (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,19 +148,19 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Product\t' + doc.product_name + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var Product = new Product(doc);
 
-        article.save(function (err) {
+        Product.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Product\t' + Product.product_name + ' added'
           });
         });
       });
