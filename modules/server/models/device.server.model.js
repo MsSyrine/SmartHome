@@ -11,7 +11,7 @@ var DeviceSchema = new Schema({
   mac_address: {
     type: String,
     required: 'Fill in a device MAC ADDRESS',
-   
+
   },
   serial_id: {
     type: String,
@@ -26,40 +26,31 @@ var DeviceSchema = new Schema({
     type: String,
     required: 'Fill in an update version'
   },
-<<<<<<< HEAD
   product: {
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId,
     ref: "Product" ,
     required: 'Fill in the product reference'
   },
-  home: {
-    type: Schema.Types.ObjectId, 
-=======
-  product: {type: Schema.Types.ObjectId,
-    ref: "Product"
-  },
   home: {type: Schema.Types.ObjectId,
->>>>>>> 6091e9210da5433634d4fd75b20df493e959dbc2
     ref: "Home" ,
     required: 'Fill in a Home id'
   },
-<<<<<<< HEAD
   type_device: {
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId,
     ref: "Type" ,
     required: 'Fill inhte device type'
   }
 });
-
+/*
 
  module.exports =  mongoose.model('Device', DeviceSchema);
- 
+
 =======
   type_device: {type: Schema.Types.ObjectId,
     ref: "Type"
   }
 });
-
+*/
 
 DeviceSchema.statics.seed = seed;
 module.exports =  mongoose.model('Device', DeviceSchema);
@@ -163,4 +154,3 @@ function seed(doc, options) {
     }
   });
 }
->>>>>>> 6091e9210da5433634d4fd75b20df493e959dbc2
