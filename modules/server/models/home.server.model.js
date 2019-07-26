@@ -89,7 +89,7 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         Home
           .findOne({
-            title: doc.title
+            _id: doc._id
           })
           .exec(function (err, existing) {
             if (err) {

@@ -1,14 +1,14 @@
-'use strict';
+/* 'use strict';
+
+
+//commented this file out as we dont need routing for devices
 
 module.exports = function (app) {
-<<<<<<< HEAD
+
   var deviceController = require('../controllers/device.server.controller');
-  var users = require('../controllers/user.server.controller');
+  var user  = require('../controllers/user.server.controller');
   var home = require('../controllers/home.server.controller');
-=======
-  var ProductController = require('../controllers/device.server.controller');
-  var users = require('../../users/server/controllers/users.server.controller');
->>>>>>> 6091e9210da5433634d4fd75b20df493e959dbc2
+
 
 
   app.route('/api/devices')
@@ -24,6 +24,7 @@ module.exports = function (app) {
 
 
 
-
+  app.param('userId', user.userByID);
   app.param('homeId', home.homeByID);
 }
+ */

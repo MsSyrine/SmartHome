@@ -6,13 +6,13 @@
 var path = require('path'),
     mongoose = require('mongoose'),
     homeModel = mongoose.model('Home')
-    deviceModel = mongoose.model('Device')
+    deviceModel = mongoose.model('Device');
  
-
-
     /**
  * Home middleware
  */
+
+ //exports the home id,which we gonna need for linking devices to a user aka home owner
 exports.homeByID = function (req, res, next, id) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({
