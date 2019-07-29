@@ -59,7 +59,7 @@ exports.list_products = function (req, res) {
   ProductModel.find((err, docs) => {
   if (!err) { 
     res.send(docs);
-   }
+    }
   else { console.log('Error in Retriving products :' + JSON.stringify(err, undefined, 2)); }
   });
 }
@@ -70,6 +70,6 @@ exports.find_a_product_by_id = function (req,res){
 
   ProductModel.findById(req.params.id, (err, doc) => {
     if (!err) { res.send(doc); }
-   else { console.log('Error in Retriving the product :' + JSON.stringify(err, undefined, 2)); }
+    else { console.log('Error in Retriving the product :' + JSON.stringify(err, undefined, 2)); }
   });
 }

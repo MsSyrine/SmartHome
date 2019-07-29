@@ -69,8 +69,11 @@ var ProductSchema = new Schema({
 
 module.exports = mongoose.model('Product', ProductSchema);
 
+
+Product.statics.seed = seed;
 /**
-* Seeds the User collection with document (Product)
+*this seed method is a static method to be incorporated the the model itself
+* Seeds the Product collection with document (Product)
 * and provided options.
 */
 function seed(doc, options) {
@@ -79,7 +82,6 @@ function seed(doc, options) {
   return new Promise(function (resolve, reject) {
 
     skipDocument()
-      .then(findAdminUser)
       .then(add)
       .then(function (response) {
         return resolve(response);
@@ -88,35 +90,11 @@ function seed(doc, options) {
         return reject(err);
       });
 
-    function findAdminUser(skip) {
-      var User = mongoose.model('User');
-
-      return new Promise(function (resolve, reject) {
-        if (skip) {
-          return resolve(true);
-        }
-
-        User
-          .findOne({
-            roles: { $in: ['admin'] }
-          })
-          .exec(function (err, admin) {
-            if (err) {
-              return reject(err);
-            }
-
-            doc.user = admin;
-
-            return resolve();
-          });
-      });
-    }
-
     function skipDocument() {
       return new Promise(function (resolve, reject) {
         Product
           .findOne({
-            title: doc.title
+            product_name: doc.product_name
           })
           .exec(function (err, existing) {
             if (err) {
@@ -143,27 +121,33 @@ function seed(doc, options) {
           });
       });
     }
-
+	//adds product only if not existant
     function add(skip) {
       return new Promise(function (resolve, reject) {
+
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Product\t' + doc.product_name + ' skipped')
+            message: chalk.yellow('Database Seeding: Product\t\t' + doc.product_name+ ' skipped')
           });
         }
+		
+         //creates a product with the provided doc
+		var product = new Product(doc);
+          
+          product.save(function (err) {
+            if (err) {
+              return reject(err);
+            }
 
-        var Product = new Product(doc);
-
-        Product.save(function (err) {
-          if (err) {
-            return reject(err);
-          }
-
-          return resolve({
-            message: 'Database Seeding: Product\t' + Product.product_name + ' added'
+            return resolve({
+              message: 'Database Seeding: Product\t\t' + product.product_name + ' added ' 
+            });
           });
-        });
-      });
-    }
-  });
-}
+    })
+          .catch(function (err) {
+            return reject(err);
+          });
+      };
+    });
+  };
+

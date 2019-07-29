@@ -139,31 +139,4 @@ function seed(doc, options) {
 
 var Home = mongoose.model('Home', HomeSchema);
 
-//Functions for Searching for and Updating Data
-
-
-/* Home.find({
-  owners: [{
-    user: {
-      type: Schema.Types.ObjectId, 
-      ref: "User" ,
-    
-    },
-    priority: {
-      type: "high",
-      default: '0'
-    },
-    period: 03/03/2019
-}]
-}).exec(function(err, home) {
-  if (err) throw err;
-   
-  console.log(home);
-}); */
-
-// Mongoose will convert `_id` from a string to an ObjectId
-// into a number, or throw an error if it failed to convert the value.
-/* Home.find({ _id: res[0]._id.toHexString()});
- */
-
 module.exports = Home;
