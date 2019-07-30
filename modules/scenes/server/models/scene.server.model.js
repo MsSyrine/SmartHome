@@ -4,46 +4,45 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  path = require('path'),
+  chalk = require('chalk'),
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  title: {
+
+var SceneSchema = new Schema({
+  id_scene: {
     type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
-  },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
+    required: 'Fill in a scene ID',
+    index: {
+      unique: true,
+      sparse: true
+    },
+    scene_element: [{
+      action: {
+        type: String,
+        required: 'Fill in a scene action'
+      },
+      timestamp: {
+        type: Date,
+        required: 'Fill in a scene action'
+      }
+    }],
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+      required: 'Fill in a product'
+    }
   }
 });
 
-ArticleSchema.statics.seed = seed;
-
-mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Scene', SceneSchema);
 
 /**
-* Seeds the User collection with document (Article)
+* Seeds the User collection with document (Scene)
 * and provided options.
 */
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Scene = mongoose.model('Scene');
 
   return new Promise(function (resolve, reject) {
 
@@ -83,7 +82,7 @@ function seed(doc, options) {
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {
-        Article
+        Scene
           .findOne({
             title: doc.title
           })
@@ -100,7 +99,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Scene (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,19 +116,19 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Scene\t' + doc.id_scene + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var Scene = new Scene(doc);
 
-        article.save(function (err) {
+        Scene.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Scene\t' + Scene.id_scene + ' added'
           });
         });
       });

@@ -4,46 +4,63 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  path = require('path'),
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
-  created: {
+var OrderSchema = new Schema({
+  order_id: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    index: {
+      unique: true,
+      sparse: true
+    }
+  },
+  order_date: {
     type: Date,
     default: Date.now
   },
-  title: {
+  billing_address: {
     type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
+    default: 'Default Address - Inotek'
   },
-  content: {
+  delivery_address: {
     type: String,
-    default: '',
-    trim: true
+    default: ' Default delivery_address'
   },
-  user: {
-    type: Schema.ObjectId,
+  total_price: {
+    type: Number
+  },
+  buyer: {
+    type: Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  list_products: [{
+    product: {type: Schema.Types.ObjectId,
+    ref: 'Product' 
+    },
+    quantity: {
+      type: Number,
+      validate: {
+        validator: function (quantity) {
+          return quantity <= 0;
+        },
+        message: 'Price must be set at a higher figure than 0'
+      }
+    }
+  }]
 });
 
-ArticleSchema.statics.seed = seed;
 
-mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Order', OrderSchema);
 
 /**
-* Seeds the User collection with document (Article)
+* Seeds the User collection with document (Order)
 * and provided options.
 */
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Order = mongoose.model('Order');
 
   return new Promise(function (resolve, reject) {
 
@@ -83,7 +100,7 @@ function seed(doc, options) {
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {
-        Article
+        Order
           .findOne({
             title: doc.title
           })
@@ -100,7 +117,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Order (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,19 +134,19 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Order\t' + doc.title + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var Order = new Order(doc);
 
-        article.save(function (err) {
+        Order.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Order\t' + Order.title + ' added'
           });
         });
       });

@@ -4,46 +4,59 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
+
+var BlogSchema = new Schema({
+  id_post: {
+    type: String,
+    index: {
+      unique: true,
+      sparse: true
+    },
+    lowercase: true,
+    trim: true,
+    required: 'Fill in a post ID'
+  },
+  title: {
+    type: String,
+    maxlength: 50,
+    required: 'Fill in a post title'
+  },
+  brief: {
+    type: String,
+    required: 'Fill in a post brief description'
+  },
+  description: {
+    type: String,
+    required: 'Fill in a post long description'
+  },
+  image: [{ type: String }],
+  shares: {
+    type: Number
+  },
+  likes:  {type: Schema.Types.ObjectId, ref: "User"} ,
+  comments: [ {type: Schema.Types.ObjectId, ref: "User"}, { type: String ,}, { type: Date, default : Date.now}],
+  updated: {
+    type: Date
+  },
   created: {
     type: Date,
     default: Date.now
   },
-  title: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
-  },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
+  author:  {type: Schema.Types.ObjectId, ref: "User" ,
+    required: 'Fill in a post author'
   }
 });
 
-ArticleSchema.statics.seed = seed;
+BlogSchema.statics.seed = seed;
+module.exports = mongoose.model('Blog', BlogSchema);
 
-mongoose.model('Article', ArticleSchema);
 
-/**
-* Seeds the User collection with document (Article)
-* and provided options.
-*/
+//must complete the seeds for the blog
+
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Blog = mongoose.model('Blog');
 
   return new Promise(function (resolve, reject) {
 
@@ -100,7 +113,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Blog (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,19 +130,19 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Blog \t' + doc.title + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var blog = new Blog(doc);
 
-        article.save(function (err) {
+        blog.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Blog\t' + blog.title + ' added'
           });
         });
       });

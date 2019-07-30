@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\modules",
-    "\\modules\\articles",
-    "\\modules\\chat",
-    "\\modules\\models",
+    "\\config",
+    "\\config\\env",
+    "\\config\\lib",
     "\\modules\\users",
     "\\modules\\users\\server",
     "\\modules\\users\\server\\config",
     "\\modules\\users\\server\\controllers",
-    "\\modules\\users\\server\\policies"
+    "\\modules\\users\\server\\policies",
+    "\\server"
   ],
-  "SelectedNode": "\\modules",
+  "SelectedNode": "\\config\\env\\development.js",
   "PreviewInSolutionExplorer": false
 }

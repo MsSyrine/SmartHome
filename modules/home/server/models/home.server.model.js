@@ -4,46 +4,46 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-/*   path = require('path'),
-  config = require(path.resolve('./config/config')), */
-  chalk = require('chalk');
+  Schema = mongoose.Schema;
 
-/**
- * Article Schema
- */
-var ArticleSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  title: {
+var HomeSchema = new Schema({
+  id_home: {
     type: String,
-    default: '',
+    required: 'Fill in a home ID',
+    lowercase: true,
     trim: true,
-    required: 'Title cannot be blank'
+    index: {
+      unique: true,
+      sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
+    }
   },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  }
+  owners: [{
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: 'Fill in an owner'
+    },
+    priority: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      default: '0'
+    },
+    period: {
+      type: Date
+    }
+}]
 });
 
-ArticleSchema.statics.seed = seed;
+module.exports = mongoose.model('Home', HomeSchema);
 
-mongoose.model('Article', ArticleSchema);
-
+//seed functions To be verified !
 /**
-* Seeds the User collection with document (Article)
+* Seeds the User collection with document (Home)
 * and provided options.
 */
 function seed(doc, options) {
-  var Article = mongoose.model('Article');
+  var Home = mongoose.model('Home');
 
   return new Promise(function (resolve, reject) {
 
@@ -83,9 +83,9 @@ function seed(doc, options) {
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {
-        Article
+        Home
           .findOne({
-            title: doc.title
+            _id: doc._id
           })
           .exec(function (err, existing) {
             if (err) {
@@ -100,7 +100,7 @@ function seed(doc, options) {
               return resolve(true);
             }
 
-            // Remove Article (overwrite)
+            // Remove Home (overwrite)
 
             existing.remove(function (err) {
               if (err) {
@@ -117,22 +117,26 @@ function seed(doc, options) {
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve({
-            message: chalk.yellow('Database Seeding: Article\t' + doc.title + ' skipped')
+            message: chalk.yellow('Database Seeding: Home\t' + doc.id_home + ' skipped')
           });
         }
 
-        var article = new Article(doc);
+        var Home = new Home(doc);
 
-        article.save(function (err) {
+        Home.save(function (err) {
           if (err) {
             return reject(err);
           }
 
           return resolve({
-            message: 'Database Seeding: Article\t' + article.title + ' added'
+            message: 'Database Seeding: Home\t' + Home.id_home + ' added'
           });
         });
       });
     }
   });
 }
+
+var Home = mongoose.model('Home', HomeSchema);
+
+module.exports = Home;

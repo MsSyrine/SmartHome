@@ -3,7 +3,7 @@
 module.exports = function (app) {
   // User Routes
   var users = require('../controllers/users.server.controller');
-  var BlogController = require('../../../server/controllers/blog.server.controller');
+  var BlogController = require('../../../blog/server/controller/blog.server.controller');
   // Setting up the users profile api
   app.route('/api/blog/add').get(BlogController.AddBlog);
   app.route('/api/users/me').get(users.me);
