@@ -4,12 +4,12 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-    deviceModel = mongoose.model('Device'),
-    product = mongoose.model('Product'),
-    userModel = mongoose.model('User');
+  deviceModel = mongoose.model('Device'),
+  product = mongoose.model('Product'),
+  userModel = mongoose.model('User');
 
 
-//the device must be verified with the products collection
+// the device must be verified with the products collection
 exports.create_a_device = function (req, res) {
   var device = new deviceModel ({
     mac_address: req.body.mac_address,

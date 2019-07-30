@@ -1,8 +1,5 @@
 'use strict';
 
-
-//we dont need routing for devices
-
 module.exports = function (app) {
 
   var deviceController = require('../controller/device.server.controller');
@@ -12,17 +9,13 @@ module.exports = function (app) {
 
 
   app.route('/api/devices')
-  .get(deviceController.list_all_devices)
-  .post(deviceController.create_a_device);
+    .get(deviceController.list_all_devices)
+    .post(deviceController.create_a_device);
 
   app.route('/api/devices/:id')
-  .put(deviceController.update_a_device)
-  .delete(deviceController.delete_a_device)
-  .get(deviceController.find_a_device);
-
-
-
-
+    .put(deviceController.update_a_device)
+    .delete(deviceController.delete_a_device)
+    .get(deviceController.find_a_device);
 
   app.param('userId', user.userByID);
   app.param('homeId', home.homeByID);

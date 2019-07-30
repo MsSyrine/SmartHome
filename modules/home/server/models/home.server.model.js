@@ -17,8 +17,15 @@ var HomeSchema = new Schema({
       sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
     }
   },
+  home_label: {
+    type: String,
+    unique: 'Home label already exists',
+    required: 'Please fill in a Label for your home',
+    trim: true,
+    default: ''
+  },
   owners: [{
-    user: {
+    username: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: 'Fill in an owner'
@@ -37,6 +44,7 @@ var HomeSchema = new Schema({
 
 module.exports = mongoose.model('Home', HomeSchema);
 
+HomeSchema.statics.seed = seed;
 //seed functions To be verified !
 /**
 * Seeds the User collection with document (Home)
@@ -48,7 +56,7 @@ function seed(doc, options) {
   return new Promise(function (resolve, reject) {
 
     skipDocument()
-      .then(findAdminUser)
+/*       .then(findAdminUser) */
       .then(add)
       .then(function (response) {
         return resolve(response);
@@ -57,7 +65,7 @@ function seed(doc, options) {
         return reject(err);
       });
 
-    function findAdminUser(skip) {
+/*     function findAdminUser(skip) {
       var User = mongoose.model('User');
 
       return new Promise(function (resolve, reject) {
@@ -79,7 +87,7 @@ function seed(doc, options) {
             return resolve();
           });
       });
-    }
+    } */
 
     function skipDocument() {
       return new Promise(function (resolve, reject) {

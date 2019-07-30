@@ -21,7 +21,7 @@ function start(seedConfig) {
       .filter(function (collection) {
         return collection.model;
       });
-    seeds.reduce(function (p , item) {
+    seeds.reduce(function (p, item) {
       return p.then(function(){
         return seed(item, options);
       });

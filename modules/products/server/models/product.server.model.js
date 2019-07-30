@@ -68,7 +68,7 @@ var ProductSchema = new Schema({
 });
 
 ProductSchema.statics.seed = seed;
-var Product = mongoose.model('Product');
+var Product = mongoose.model('Product', ProductSchema);
 module.exports = Product;
 /**
 *this seed method is a static method to be incorporated the the model itself

@@ -4,7 +4,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-Schema = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 var DeviceSchema = new Schema({
   mac_address: {
@@ -27,19 +27,19 @@ var DeviceSchema = new Schema({
   },
   product: {
     type: Schema.Types.ObjectId,
-    ref: "Product" ,
+    ref: 'Product',
     required: 'Fill in the product reference'
   },
   home: {
     type: Schema.Types.ObjectId, 
-    ref: "Home" ,
+    ref: 'Home',
     required: 'Fill in a Home id'
   },
   type_device: {
     type: Schema.Types.ObjectId,
-    ref: "Type" ,
+    ref: 'Type',
     required: 'Fill in the device type'
   }
 });
 
-module.exports =  mongoose.model('Device', DeviceSchema);
+module.exports = mongoose.model('Device', DeviceSchema);
