@@ -53,7 +53,7 @@ exports.update_a_device = function (req,res){
         home: req.body.home,
         type_device: req.body.price,
         });
-    deviceModel.findByIdAndUpdate(req.params.id, { $set: device }, { new: true } (err, doc) => {
+    deviceModel.findByIdAndUpdate(req.params.id, { $set: device }, { new: true }, (err, doc) => {
         if (!err) { res.send(doc); }
         else { console.log('Error in device Update :' + JSON.stringify(err, undefined, 2)); }
     });
@@ -80,10 +80,10 @@ exports.find_a_device = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
-    deviceModel.findById(req.params.id, (err, doc) => {
-        if (!err) { res.send(doc); }
-        else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
-    });
+  deviceModel.findById({_id:req.params.id}, (err, doc) => {
+    if (!err) { res.send(doc); }
+    else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
+  });
 }
 
 exports.update_device_state = function (req,res){
@@ -94,7 +94,7 @@ exports.update_device_state = function (req,res){
         state : req.body.state
         });
 
-    deviceModel.findByIdAndUpdate( {_id:req.params.id}, { state: device.state }, { new: true }  (err, doc) => {
+    deviceModel.findByIdAndUpdate( {_id:req.params.id}, { state: device.state }, { new: true }, (err, doc) => {
         if (!err) {
           res.send(doc);
           //redirects to '/api/home/mydevices/:req.params.serial_id'
@@ -115,7 +115,6 @@ exports.find_a_device = function (req,res){
             return next(err);
           }
           else{
-            else{
               device.save(err => {
                 if (err) {
                 //  console.log('Error in device Save :' + JSON.stringify(err, undefined, 2));
@@ -124,10 +123,5 @@ exports.find_a_device = function (req,res){
                 return res.status(200).send(device);
               });
             }
-          }
-      }
-    deviceModel.findById({_id:req.params.id}, (err, doc) => {
-        if (!err) { res.send(doc); }
-        else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
-    });
+          });
 }
