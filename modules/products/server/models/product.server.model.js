@@ -67,11 +67,9 @@ var ProductSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
-
-
 ProductSchema.statics.seed = seed;
-
+var Product = mongoose.model('Product');
+module.exports = Product;
 /**
 *this seed method is a static method to be incorporated the the model itself
 * Seeds the Product collection with document (Product)
@@ -131,17 +129,17 @@ function seed(doc, options) {
             message: chalk.yellow('Database Seeding: Product\t\t' + doc.product_name+ ' skipped')
           });
         }
-		
+
          //creates a product with the provided doc
 		var product = new Product(doc);
-          
+
           product.save(function (err) {
             if (err) {
               return reject(err);
             }
 
             return resolve({
-              message: 'Database Seeding: Product\t\t' + product.product_name + ' added ' 
+              message: 'Database Seeding: Product\t\t' + product.product_name + ' added '
             });
           });
     })
