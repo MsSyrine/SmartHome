@@ -42,8 +42,8 @@ var ProductSchema = new Schema({
     type: Number,
     required: 'Please fill in a product stock',
     validate: {
-      validator: function (price) {
-        return price <= 0;
+      validator: function (stock) {
+        return stock >= 0;
       },
       message: 'stock must be set at a higher figure than 0'
     }
@@ -53,7 +53,7 @@ var ProductSchema = new Schema({
     required: 'Please fill in a product price',
     validate: {
       validator: function (price) {
-        return price <= 0;
+        return price >= 0;
       },
       message: 'Price must be set at a higher figure than 0'
     }
@@ -70,7 +70,8 @@ var ProductSchema = new Schema({
 module.exports = mongoose.model('Product', ProductSchema);
 
 
-Product.statics.seed = seed;
+ProductSchema.statics.seed = seed;
+
 /**
 *this seed method is a static method to be incorporated the the model itself
 * Seeds the Product collection with document (Product)
