@@ -17,6 +17,11 @@ var HomeSchema = new Schema({
       sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
     }
   },
+  label : {
+    type : String,
+    trim : true,
+    required : 'Fill in a home label'
+  },
   owners: [{
     user: {
       type: Schema.Types.ObjectId,
