@@ -42,8 +42,8 @@ var ProductSchema = new Schema({
     type: Number,
     required: 'Please fill in a product stock',
     validate: {
-      validator: function (price) {
-        return price <= 0;
+      validator: function (stock) {
+        return stock >= 0;
       },
       message: 'stock must be set at a higher figure than 0'
     }
@@ -53,7 +53,7 @@ var ProductSchema = new Schema({
     required: 'Please fill in a product price',
     validate: {
       validator: function (price) {
-        return price <= 0;
+        return price >= 0;
       },
       message: 'Price must be set at a higher figure than 0'
     }
@@ -67,10 +67,12 @@ var ProductSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
 
 
-Product.statics.seed = seed;
+ProductSchema.statics.seed = seed;
+var Product = mongoose.model('Product', ProductSchema);
+module.exports = Product;
+
 /**
 *this seed method is a static method to be incorporated the the model itself
 * Seeds the Product collection with document (Product)
@@ -130,17 +132,17 @@ function seed(doc, options) {
             message: chalk.yellow('Database Seeding: Product\t\t' + doc.product_name+ ' skipped')
           });
         }
-		
+
          //creates a product with the provided doc
 		var product = new Product(doc);
-          
+
           product.save(function (err) {
             if (err) {
               return reject(err);
             }
 
             return resolve({
-              message: 'Database Seeding: Product\t\t' + product.product_name + ' added ' 
+              message: 'Database Seeding: Product\t\t' + product.product_name + ' added '
             });
           });
     })
