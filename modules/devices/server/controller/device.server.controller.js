@@ -112,7 +112,7 @@ exports.update_device_state = function (req,res){
 exports.find_a_device = function (req,res){
   /*if (!ObjectId.isValid(req.params.serial_id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);*/
-        product.find({_id : req.params.id }, function (err, docs) {
+        deviceModel.find({_id : req.params.id }, function (err, docs) {
           if (!(docs.length)){
             var err = new Error('A Device with that id is not registered within our products. Please verify your device credentials..')
             err.status = 400;
