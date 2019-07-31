@@ -31,14 +31,14 @@ var DeviceSchema = new Schema({
     required: 'Fill in the product reference'
   },
   home: {
-    type: Schema.Types.ObjectId, 
-    ref: "Home" ,
-    required: 'Fill in a Home id'
+    type: Schema.Types.ObjectId,
+    ref: "Home"
+    //required: 'Fill in a Home id'
   },
   type_device: {
     type: Schema.Types.ObjectId,
-    ref: "Type" ,
-    required: 'Fill in the device type'
+    ref: "Type"
+    //required: 'Fill in the device type'
   }
 });
 
