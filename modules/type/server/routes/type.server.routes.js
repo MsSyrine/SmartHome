@@ -9,8 +9,8 @@ module.exports = function (app) {
     .post(TypeController.create_a_type);
 
   app.route('/api/devices/type/:id')
-    .delete(TypeController.delete_a_typet)
-    .get(Typeontroller.find_a_type);
+    .delete(TypeController.delete_a_type)
+    .get(TypeController.find_a_type);
 
   app.param('userId', users.userByID);
 };

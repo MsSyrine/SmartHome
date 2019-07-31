@@ -13,7 +13,7 @@ var TypeDeviceSchema = new Schema({
   name_type: {
     type: String,
     required: 'Fill in a type device name',
-    index : true
+    index: true
   }
 });
 
