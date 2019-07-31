@@ -7,7 +7,7 @@ var path = require('path'),
     mongoose = require('mongoose'),
     BlogModel = mongoose.model('Blog'),
     UserModel = mongoose.model('User');
-const CircularJSON = require('circular-json');
+    const CircularJSON = require('circular-json');
 
 exports.AddBlog = function (req, res) {
  var User_test = new UserModel(UserModel.findOne({username: req.body.username}, function(err, doc) {
