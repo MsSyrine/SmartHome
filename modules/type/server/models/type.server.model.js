@@ -6,22 +6,14 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   chalk = require('chalk'),
+  ObjectID = require('mongodb').ObjectID,
   Schema = mongoose.Schema;
 
 var TypeDeviceSchema = new Schema({
-  id_type: {
-    type: String,
-    required: 'Fill in a type device ID',
-    lowercase: true,
-    trim: true,
-    index: {
-      unique: true,
-      sparse: true
-    }
-  },
   name_type: {
     type: String,
-    required: 'Fill in a type device name'
+    required: 'Fill in a type device name',
+    index : true
   }
 });
 

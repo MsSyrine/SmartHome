@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     deviceModel = mongoose.model('Device'),
     ProductModel = mongoose.model('Product'),
-    userModel = mongoose.model('User');
+    userModel = mongoose.model('User'),
+    TypeModel = mongoose.model('Type');
     const CircularJSON = require('circular-json');
 
 
@@ -16,6 +17,8 @@ exports.create_a_device = function (req, res) {
     if (!err) { res.send(CircularJSON.stringify(doc));}
     else { console.log('Error in Retriving the Product :' + JSON.stringify(err, undefined, 2)); }
   }));
+  var type = new TypeModel({name_type : req.body.name_type}) ;
+
   var device = new deviceModel ({
     mac_address: req.body.mac_address,
     serial_id: req.body.serial_id,
@@ -23,7 +26,13 @@ exports.create_a_device = function (req, res) {
     version: req.body.version,
     product: Product,
     home: req.body.home,
-    type_device: req.body.price
+    type_device: type
+  });
+  type.save((err, doc) => {
+    if (!err) {
+      res.send(doc);
+    }
+    else { console.log('Error in device Save :' + JSON.stringify(err, undefined, 2)); }
   });
   console.log(device);
   device.save((err, doc) => {
