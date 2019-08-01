@@ -204,7 +204,6 @@ UserSchema.statics.generateRandomPassphrase = function () {
   return new Promise(function (resolve, reject) {
     var password = '';
     var repeatingCharacters = new RegExp('(.)\\1{2,}', 'g');
-
     // iterate until the we have a valid passphrase
     // NOTE: Should rarely iterate more than once, but we need this to ensure no repeating characters are present
     while (password.length < 20 || repeatingCharacters.test(password)) {
@@ -216,11 +215,9 @@ UserSchema.statics.generateRandomPassphrase = function () {
         uppercase: true,
         excludeSimilarCharacters: true
       });
-
       // check if we need to remove any repeating characters
       password = password.replace(repeatingCharacters, '');
     }
-
     // Send the rejection back if the passphrase fails to pass the strength test
     if (owasp.test(password).errors.length) {
       reject(new Error('An unexpected problem occurred while generating the random passphrase'));
@@ -233,7 +230,7 @@ UserSchema.statics.generateRandomPassphrase = function () {
 
 UserSchema.statics.seed = seed;
 
-mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
 
 /**
 * Seeds the User collection with document (User)
@@ -241,9 +238,8 @@ mongoose.model('User', UserSchema);
 */
 function seed(doc, options) {
   var User = mongoose.model('User');
-
+  
   return new Promise(function (resolve, reject) {
-
     skipDocument()
       .then(add)
       .then(function (response) {

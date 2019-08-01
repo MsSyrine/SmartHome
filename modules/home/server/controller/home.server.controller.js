@@ -20,28 +20,46 @@ exports.list_home = function (req,res){
 }
 //the home must be verified with the username
 exports.create_a_home = function (req, res) {
-    var User_test = new UserModel(UserModel.findOne({username: req.body.owners.username}, function(err, doc) {
-      if (!err) { res.send(CircularJSON.stringify(doc)) }
+  console.log("********request  :*********" + req.body);
+  var data = JSON.stringify(req.body);
+// console.log("********label :*********" + data.home_label);
+  console.log("request data :" + data);
+  var obj = JSON.parse(data);
+  var username = obj.owners[0].username;
+  console.log("********obj username :*********" + obj.owners[0].username);
+/*     var User_test = new UserModel(UserModel.findOne({username: username}, function(err, doc) {
+      if (!err) { res.send(doc) }
       else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
     }));
-    console.log("request :" + req.body);
-    console.log("user " + User_test );
-    var home = new homeModel ({
-      id_home : req.body.id_home,
-      home_label : req.body.home_label,
-      owners : [{
-        username: User_test.email,
-        priority: req.body.owners.priority
-/*         startdate: req.body.owners.startdate,
-        validUntil: req.body.owners.validuntil */
-      }]
-    });
-    console.log("home credentials " + home );
-      home.save((err, doc) => {
-        if (!err) { res.send(doc); }
-        else { console.log('Error in Home Save :' + JSON.stringify(err, undefined, 2)); }
+  console.log("user " + User_test );
+    */
+  UserModel.find({username: username }, function (err, docs) {
+    if (!(docs.length)){
+      console.log('this username is not registered . Please verify your user credentials..');
+      return res.status(400).send(err);
+    }
+    else{
+      var home = new homeModel ({
+        id_home: req.body.id_home,
+        home_label: req.body.home_label,
+        owners: [{
+          username: obj.owners[0].username,
+          priority: obj.owners[0].priority 
+        }]
       });
-  }
+
+      console.log('home' + home);
+      home.save(err => {
+        if (err) {
+          console.log('Error in home Saving :' + JSON.stringify(err, undefined, 2));
+          return res.status(500).send(err);
+        }
+        return res.status(200).send(home);
+      });
+
+    }
+  });
+}
   
  //exports the home id,which we gonna need for linking devices to a user aka home owner
 exports.homeByID = function (req, res, next, id) {

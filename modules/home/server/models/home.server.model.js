@@ -25,7 +25,7 @@ var HomeSchema = new Schema({
   },
   owners: [{
     username: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Mixed,
       ref: 'User',
       required: 'Fill in an owner'
     },
@@ -39,31 +39,18 @@ var HomeSchema = new Schema({
       type: Date,
     //  required: true,
       default: Date.now
-    },
-/*     enddate: {
-      type: Date,
-      required: 'Please fill in an end date',
-      validate: {
-        validator: function (enddate) {
-          return enddate >= 0;
-        },
-      message: 'end date must be set at a higher date than the start date '
-    }
-    }, */
+    }, 
     validUntil: {
-      type: Date
-    }
-    //required: 'Please fill in a validation limit date',
-      /* validate: {
+      type: Date,
+/*       validate: {
         validator: function (validuntil) {
           return validuntil >= startdate;
         },
-      message: 'end date must be set at a higher date than the start date '
-    },
+        message: 'end date must be set at a higher date than the start date '
+      }, */
       default: () => Date.now() + 2160*60*60*1000 // 90 days from now
-    } */
-
-}]
+    } 
+  }]
 });
 
 module.exports = mongoose.model('Home', HomeSchema);

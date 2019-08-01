@@ -4,6 +4,8 @@
  * Module dependencies
  */
 var adminPolicy = require('../policies/admin.server.policy'),
+  mongoose = require('mongoose'),
+  User = mongoose.model('User'),
   admin = require('../controllers/admin.server.controller');
 
 module.exports = function (app) {
