@@ -19,7 +19,7 @@ exports.list_home = function (req,res){
   });
 }
 //the home must be verified with the username
-exports.create_a_home = function (req, res) {
+exports.create_home = function (req, res) {
   console.log("********request  :*********" + req.body);
   var data = JSON.stringify(req.body);
 // console.log("********label :*********" + data.home_label);
@@ -40,11 +40,11 @@ exports.create_a_home = function (req, res) {
     }
     else{
       var home = new homeModel ({
-        id_home: req.body.id_home,
-        home_label: req.body.home_label,
+        id_home: obj.id_home,
+        home_label: obj.home_label,
         owners: [{
           username: obj.owners[0].username,
-          priority: obj.owners[0].priority 
+          priority: obj.owners[0].priority
         }]
       });
 

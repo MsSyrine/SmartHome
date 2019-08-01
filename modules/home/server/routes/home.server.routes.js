@@ -8,7 +8,7 @@ module.exports = function (app) {
 
   app.route('/api/home/')
     .get(homeController.list_home)
-    .post(homeController.create_a_home);
+    .post(homeController.create_home);
 
   app.route('/api/home/mydevices')
     .get(deviceController.list_all_devices)
