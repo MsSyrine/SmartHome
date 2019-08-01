@@ -4,12 +4,13 @@ module.exports = function (app) {
   var homeController = require('../../../home/server/controller/home.server.controller');
   var users = require('../../../users/server/controllers/users.server.controller');
   var deviceController = require('../../../devices/server/controller/device.server.controller');
-  
-  app.route('api/home/')
+
+
+  app.route('/api/home/')
     .get(homeController.list_home)
     .post(homeController.create_a_home);
 
-  app.route('api/home/mydevices')
+  app.route('/api/home/mydevices')
     .get(deviceController.list_all_devices)
     .post(deviceController.create_a_device);
 
