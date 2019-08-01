@@ -26,7 +26,7 @@ exports.create_a_product = function (req, res) {
 }
 
 exports.update_a_product = function (req, res) {
- /* if (!ObjectId.isValid(req.params.id))
+  /* if (!ObjectId.isValid(req.params.id))
     return res.status(400).send(`No record with given id : ${req.params.id}`);*/
 
   var product = new ProductModel ({
@@ -45,9 +45,9 @@ exports.update_a_product = function (req, res) {
 }
 
 exports.delete_a_product = function (req, res) {
-  /*if (!ObjectId.isValid(req.params.id))
-  return res.status(400).send(`No record with given id : ${req.params.id}`);*/
-  console.log('WIOUUUUUUUUUUUUUUUW');
+/*   if (!ObjectId.isValid(req.params.id))
+  return res.status(400).send(`No record with given id : ${req.params.id}`); */
+
   ProductModel.findByIdAndRemove(req.params.id, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Product Delete :' + JSON.stringify(err, undefined, 2)); }
@@ -64,8 +64,8 @@ exports.list_products = function (req, res) {
 }
 
 exports.find_a_product_by_id = function (req,res){
-  /*if (!ObjectId.isValid(req.params.id))
-    return res.status(400).send(`No record with given id : ${req.params.id}`);*/
+/*   if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send(`No record with given id : ${req.params.id}`); */
 
   ProductModel.findById(req.params.id, (err, doc) => {
     if (!err) { res.send(doc); }

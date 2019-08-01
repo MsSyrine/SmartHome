@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     const CircularJSON = require('circular-json');
 
 
-//the device must be verified with the products collection
+// the device must be verified with the products collection
 exports.create_a_device = function (req, res) {
   var Product = new ProductModel(ProductModel.findOne({id_product : req.body.id_product}, function(err, doc) {
     if (!err) { res.send(CircularJSON.stringify(doc));}
