@@ -10,7 +10,7 @@ var path = require('path'),
     const CircularJSON = require('circular-json');
 
 exports.AddBlog = function (req, res) {
- var User_test = new UserModel(UserModel.findOne({username: req.body.username}, function(err, doc) {
+  var User_test = new UserModel(UserModel.findOne({username: req.body.username}, function(err, doc) {
     if (!err) { res.send(CircularJSON.stringify(doc)) }
     else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
   }));

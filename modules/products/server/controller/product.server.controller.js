@@ -75,7 +75,6 @@ exports.list_products = function (req, res) {
 exports.find_a_product_by_id = function (req,res){
 /*   if (!ObjectId.isValid(req.params.id))
     return res.status(400).send(`No record with given id : ${req.params.id}`); */
-
   ProductModel.findById(req.params.id, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Retriving the product :' + JSON.stringify(err, undefined, 2)); }

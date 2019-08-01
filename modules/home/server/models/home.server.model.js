@@ -21,8 +21,7 @@ var HomeSchema = new Schema({
     type: String,
     unique: 'Home label already exists',
     required: 'Please fill in a Label for your home',
-    trim: true,
-    default: ''
+    trim: true
   },
   owners: [{
     username: {
@@ -31,14 +30,39 @@ var HomeSchema = new Schema({
       required: 'Fill in an owner'
     },
     priority: {
-      type: String,
+      type: Number,
       lowercase: true,
       trim: true,
       default: '0'
     },
-    period: {
+    startdate: {
+      type: Date,
+    //  required: true,
+      default: Date.now
+    },
+/*     enddate: {
+      type: Date,
+      required: 'Please fill in an end date',
+      validate: {
+        validator: function (enddate) {
+          return enddate >= 0;
+        },
+      message: 'end date must be set at a higher date than the start date '
+    }
+    }, */
+    validUntil: {
       type: Date
     }
+    //required: 'Please fill in a validation limit date',
+      /* validate: {
+        validator: function (validuntil) {
+          return validuntil >= startdate;
+        },
+      message: 'end date must be set at a higher date than the start date '
+    },
+      default: () => Date.now() + 2160*60*60*1000 // 90 days from now
+    } */
+
 }]
 });
 
