@@ -30,11 +30,6 @@ var DeviceSchema = new Schema({
     ref: 'Product',
     required: 'Fill in the product reference'
   },
-  home: {
-    type: Schema.Types.ObjectId,
-    ref: "Home"
-    //required: 'Fill in a Home id'
-  },
   type_device: {
     type: Schema.Types.ObjectId,
     ref: "Type"
