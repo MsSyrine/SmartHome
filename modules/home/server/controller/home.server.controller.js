@@ -21,19 +21,13 @@ exports.list_home = function (req,res){
 }
 //the home must be verified with the username
 exports.create_home = function (req, res) {
-  console.log("********request  :*********" + req.body);
   var data = JSON.stringify(req.body);
-
-// console.log("request data :" + data);
   var obj = JSON.parse(data);
-  console.log("********obj username :*********" + obj.owners[0].username);
   var username = obj.owners[0].username;
-
   var device = new deviceModel(deviceModel.findOne({serial_id : obj.devices[0].serial_id}, function(err, doc) {
     if (!err) { res.send(CircularJSON.stringify(doc));}
     else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
   }));
-// console.log('***************device**************' + device);
   UserModel.find({username: username }, function (err, docs) {
     if (!(docs.length)){
       console.log('this username is not registered . Please verify your user credentials..' + JSON.stringify(err, undefined, 2));
@@ -49,7 +43,6 @@ exports.create_home = function (req, res) {
       console.log('home' + home);
       home.save((err, doc) => {
         if (!err) {
-//          res.send(doc);
           console.log('Home saved! ' + home);
         }
         else {
@@ -59,8 +52,27 @@ exports.create_home = function (req, res) {
     }
   });
 }
-  
- //exports the home id,which we gonna need for linking devices to a user aka home owner
+
+exports.list_user_devices = function (req,res){
+// link user to its devices by home
+  homeModel.find({}).populate([{
+    path: 'owners',
+    model: 'User'
+  }, 
+  {
+    path: 'devices',
+    model: 'Device'
+  }]).exec(function(err, doc) {
+  if(err) throw err;
+  if(doc) {
+      // execute on order
+      console.log(CircularJSON.stringify(doc)); // prints user's username
+      res.send(CircularJSON.stringify(doc));
+  }
+}); 
+}
+
+ //exports the home id
 exports.homeByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -80,15 +92,4 @@ exports.homeByID = function (req, res, next, id) {
   req.profile = home;
   next();
   });
-};  
-
-/* 
-exports.find_devices_by_home_id = function (req,res){
-    if (!ObjectId.isValid(req.params.id))
-          return res.status(400).send(`No record with given home id : ${req.params.id}`);
-  
-      homeModel.find(req.params.id, (err, doc) => {
-          if (!err) { res.send(doc); }
-          else { console.log('Error in Retriving thed home record:' + JSON.stringify(err, undefined, 2)); }
-      });
-  } */
+};

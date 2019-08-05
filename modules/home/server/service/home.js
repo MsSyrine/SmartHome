@@ -63,7 +63,7 @@ async function findHomeByUsername (username) {
     }
 }
 
-async function findDevices (home_id) {
+/* async function findDevices (home_id) {
     try {
 //        return deviceModel.populate.findOne({'username': username});
         return deviceModel.find({ home: home_id })
@@ -73,8 +73,7 @@ async function findDevices (home_id) {
     } catch (error) {
         throw new Error(`Unable to connect to the database.`)
     }
-}
-
+} */
 
 // other methods
 
