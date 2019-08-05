@@ -6,10 +6,8 @@
 var mongoose = require('mongoose'),
     deviceModel = mongoose.model('Device'),
     ProductModel = mongoose.model('Product'),
-    userModel = mongoose.model('User'),
     TypeModel = mongoose.model('Type');
-    const CircularJSON = require('circular-json');
-
+const CircularJSON = require('circular-json');
 
 // the device must be verified with the products collection
 exports.create_a_device = function (req, res) {
@@ -25,7 +23,6 @@ exports.create_a_device = function (req, res) {
     state: req.body.state,
     version: req.body.version,
     product: Product,
-    home: req.body.home,
     type_device: type
   });
   type.save((err, doc) => {
@@ -54,7 +51,6 @@ exports.update_a_device = function (req,res){
         state: req.body.state,
         version: req.body.version,
         product: req.body.product,
-        home: req.body.home,
         type_device: req.body.price,
         });
     deviceModel.findByIdAndUpdate(req.params.id, { $set: device }, { new: true }, (err, doc) => {
@@ -64,7 +60,7 @@ exports.update_a_device = function (req,res){
 }
 
 exports.delete_a_device = function (req,res){
- /* if (!ObjectId.isValid(req.params.id))
+/* if (!ObjectId.isValid(req.params.id))
   return res.status(400).send(`No record with given id : ${req.params.id}`);*/
 
   deviceModel.findByIdAndRemove(req.params.id, (err, doc) => {
@@ -91,7 +87,7 @@ exports.find_a_device = function (req,res){
 }
 
 exports.update_device_state = function (req,res){
- /* if (!ObjectId.isValid(req.params.id))
+/* if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No device record with given id : ${req.params.id}`);*/
 
     var device = new deviceModel ({

@@ -23,6 +23,12 @@ var HomeSchema = new Schema({
     required: 'Please fill in a Label for your home',
     trim: true
   },
+  devices:[{ 
+    serial_id: {
+    type: Schema.Types.Mixed,
+//    required: 'Please fill in a device your home', 
+    ref: 'Device' }
+  }],
   owners: [{
     username: {
       type: Schema.Types.Mixed,

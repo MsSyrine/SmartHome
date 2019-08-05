@@ -6,6 +6,7 @@
 var path = require('path'),
 mongoose = require('mongoose'),
 homeModel = mongoose.model('Home'),
+deviceModel = mongoose.model('Device'),
 UserModel = mongoose.model('User');
 
 const CircularJSON = require('circular-json');
@@ -22,39 +23,37 @@ exports.list_home = function (req,res){
 exports.create_home = function (req, res) {
   console.log("********request  :*********" + req.body);
   var data = JSON.stringify(req.body);
-// console.log("********label :*********" + data.home_label);
-  console.log("request data :" + data);
+
+// console.log("request data :" + data);
   var obj = JSON.parse(data);
-  var username = obj.owners[0].username;
   console.log("********obj username :*********" + obj.owners[0].username);
-/*     var User_test = new UserModel(UserModel.findOne({username: username}, function(err, doc) {
-      if (!err) { res.send(doc) }
-      else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
-    }));
-  console.log("user " + User_test );
-    */
+  var username = obj.owners[0].username;
+
+  var device = new deviceModel(deviceModel.findOne({serial_id : obj.devices[0].serial_id}, function(err, doc) {
+    if (!err) { res.send(CircularJSON.stringify(doc));}
+    else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
+  }));
+// console.log('***************device**************' + device);
   UserModel.find({username: username }, function (err, docs) {
     if (!(docs.length)){
-      console.log('this username is not registered . Please verify your user credentials..');
-      return res.status(400).send(err);
+      console.log('this username is not registered . Please verify your user credentials..' + JSON.stringify(err, undefined, 2));
     }
     else{
       var home = new homeModel ({
         id_home: obj.id_home,
         home_label: obj.home_label,
-        owners: [{
-          username: obj.owners[0].username,
-          priority: obj.owners[0].priority
-        }]
+        devices: obj.devices,
+        owners: obj.owners
       });
 
       console.log('home' + home);
-      home.save(err => {
-        if (err) {
-          console.log('Error in home Saving :' + JSON.stringify(err, undefined, 2));
-          return res.status(500).send(err);
+      home.save((err, doc) => {
+        if (!err) {
+//          res.send(doc);
+          console.log('Home saved! ' + home);
         }
-        return res.status(200).send(home);
+        else {
+          console.log('Error in home Saving :' + JSON.stringify(err, undefined, 2)); }
       });
 
     }
