@@ -10,9 +10,11 @@ module.exports = function (app) {
     .get(homeController.list_home)
     .post(homeController.create_home);
 
-  app.route('/api/home/mydevices')
-    .get(homeController.list_user_devices)
+  app.route('/api/home/mydevices/')
     .post(deviceController.create_a_device);
+
+  app.route('/api/home/:id')
+    .get(homeController.list);
 
   app.route('/api/home/mydevices/:deviceId')
     .put(deviceController.update_a_device)
