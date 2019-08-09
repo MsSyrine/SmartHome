@@ -5,9 +5,13 @@
  */
 var path = require('path'),
 mongoose = require('mongoose'),
-homeModel = mongoose.model('Home'),
 deviceModel = mongoose.model('Device'),
-UserModel = mongoose.model('User');
+UserModel = mongoose.model('User'),
+homeModel = mongoose.model('Home');
+
+/* const homeModel = require('../models/home.server.model');
+const UserModel = require('../../../users/server/models/user.server.model');
+const deviceModel = require('../../../devices/server/models/device.server.model'); */
 
 const CircularJSON = require('circular-json');
 /**
@@ -21,28 +25,31 @@ exports.list_home = function (req,res){
 }
 //the home must be verified with the username
 exports.create_home = function (req, res) {
-  var User_test = new UserModel(UserModel.findOne({username: req.body.username}, function(err, doc) {
+var User_test =new UserModel(UserModel.findOne({username: req.body.username}, function(err, doc) {
     if (!err) { console.log(CircularJSON.stringify(doc)) }
     else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
   }));
-  var device_test = new deviceModel(deviceModel.findOne({serial_id :req.body.devices[0].serial_id}, function(err, doc) {
-    if (!err) { console.log(CircularJSON.stringify(doc));}
-    else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
-  }));
-      var home = new homeModel ({
-        id_home: req.body.id_home,
-        home_label: req.body.home_label,
-        devices:  [{  
-          serial_id: device_test._id
-        }],
-        owners: [{
-          user: User_test._id,
-          priority: req.body.priority
-        }]
-      });
-      console.log('home***************' + home);
+  var home = new homeModel ({
+    id_home: req.body.id_home,
+    home_label: req.body.home_label,
+/*         devices:  [ device_test._id ], */
+    owners: [{
+      user: User_test._id,
+      priority: req.body.priority
+    }] 
+  });   
+  req.body.devices.forEach(function(device) {
+    var dev = new deviceModel(deviceModel.findOne({serial_id: device}, function(err, doc) {
+      if (!err) { 
+        console.log(CircularJSON.stringify(doc));
+      }
+      else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
+      }));
+      home.devices.push(dev._id );
+  });
       home.save((err, doc) => {
         if (!err) {
+          res.json(doc);
           console.log('Home saved! ' + home);
         }
         else {
@@ -50,14 +57,22 @@ exports.create_home = function (req, res) {
     });
 }
 
-exports.list = async function (req, res) {
-  const home = await homeModel.find({id_home: req.params.id})
-  .populate({ 
-    path: 'owners',
-    model: 'User'
+exports.getHomeWithDevices = function ( req, res) {
+  // Find and populate
+  homeModel.find({id_home: req.params.id}).sort('-created')
+  .populate({
+    path: 'devices',
+    model: 'Device'
+  })
+  .exec(function (err, articles) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(articles);
+    }
   });
-  console.log('%j', home);
-  res.send(CircularJSON.stringify(home));
 }
 
  //exports the home id

@@ -4,7 +4,7 @@ module.exports = function (app) {
   var ProductController = require('../controller/product.server.controller');
   var users = require('../../../users/server/controllers/users.server.controller');
 
-  app.route('/api/products')
+  app.route('/api/products/')
     .get(ProductController.list_products)
     .post(ProductController.create_a_product);
 

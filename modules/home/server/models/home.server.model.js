@@ -23,16 +23,21 @@ var HomeSchema = new Schema({
     required: 'Please fill in a Label for your home',
     trim: true
   },
-  devices:[{ 
+  /* devices:[{ 
     serial_id: {
     type: Schema.Types.ObjectId,
     required: 'Please fill in a device your home', 
     ref: 'Device' }
+  }], */
+  devices: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Device',
+    required: 'Please fill in a device your home'
   }],
   owners: [{
     user: {
-      type: Schema.Types.ObjectId,
       ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
       required: 'Fill in an owner'
     },
     priority: {
@@ -58,8 +63,8 @@ var HomeSchema = new Schema({
     } 
   }]
 });
-
-module.exports = mongoose.model('Home', HomeSchema);
+const Home = mongoose.model('Home', HomeSchema , 'homes');
+module.exports = Home;
 
 HomeSchema.statics.seed = seed;
 //seed functions To be verified !
@@ -162,6 +167,97 @@ function seed(doc, options) {
   });
 }
 
-var Home = mongoose.model('Home', HomeSchema);
+function seed(doc, options) {
+  var Home = mongoose.model('Home');
 
-module.exports = Home;
+  return new Promise(function (resolve, reject) {
+
+    skipDocument()
+/*       .then(findAdminUser) */
+      .then(add)
+      .then(function (response) {
+        return resolve(response);
+      })
+      .catch(function (err) {
+        return reject(err);
+      });
+
+/*     function findAdminUser(skip) {
+      var User = mongoose.model('User');
+
+      return new Promise(function (resolve, reject) {
+        if (skip) {
+          return resolve(true);
+        }
+
+        User
+          .findOne({
+            roles: { $in: ['admin'] }
+          })
+          .exec(function (err, admin) {
+            if (err) {
+              return reject(err);
+            }
+
+            doc.user = admin;
+
+            return resolve();
+          });
+      });
+    } */
+
+    function skipDocument() {
+      return new Promise(function (resolve, reject) {
+        Home
+          .findOne({
+            _id: doc._id
+          })
+          .exec(function (err, existing) {
+            if (err) {
+              return reject(err);
+            }
+
+            if (!existing) {
+              return resolve(false);
+            }
+
+            if (existing && !options.overwrite) {
+              return resolve(true);
+            }
+
+            // Remove Home (overwrite)
+
+            existing.remove(function (err) {
+              if (err) {
+                return reject(err);
+              }
+
+              return resolve(false);
+            });
+          });
+      });
+    }
+
+    function add(skip) {
+      return new Promise(function (resolve, reject) {
+        if (skip) {
+          return resolve({
+            message: chalk.yellow('Database Seeding: Home\t' + doc.id_home + ' skipped')
+          });
+        }
+
+        var Home = new Home(doc);
+
+        Home.save(function (err) {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve({
+            message: 'Database Seeding: Home\t' + Home.id_home + ' added'
+          });
+        });
+      });
+    }
+  });
+}

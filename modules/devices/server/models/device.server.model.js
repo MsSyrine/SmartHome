@@ -36,5 +36,6 @@ var DeviceSchema = new Schema({
     //required: 'Fill in the device type'
   }
 });
-
-module.exports = mongoose.model('Device', DeviceSchema);
+const Device = mongoose.model('Device', DeviceSchema, 'devices');
+module.exports = Device;
+// module.exports = mongoose.model('Device', DeviceSchema);

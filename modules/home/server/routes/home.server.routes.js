@@ -14,7 +14,7 @@ module.exports = function (app) {
     .post(deviceController.create_a_device);
 
   app.route('/api/home/:id')
-    .get(homeController.list);
+    .get(homeController.getHomeWithDevices);
 
   app.route('/api/home/mydevices/:deviceId')
     .put(deviceController.update_a_device)

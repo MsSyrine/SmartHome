@@ -8,7 +8,7 @@ module.exports = function (app) {
 
 
 
-  app.route('/api/devices')
+  app.route('/api/devices/')
     .get(deviceController.list_all_devices)
     .post(deviceController.create_a_device);
 
