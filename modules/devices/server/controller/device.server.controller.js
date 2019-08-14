@@ -6,11 +6,12 @@
 var mongoose = require('mongoose'),
     deviceModel = mongoose.model('Device'),
     ProductModel = mongoose.model('Product'),
+    homeModel = mongoose.model('Home'),
     TypeModel = mongoose.model('Type');
 const CircularJSON = require('circular-json');
 
-// the device must be verified with the products collection
-exports.create_a_device = function (req, res) {
+// we no longer need this method as the device gets created from the home entity
+/* exports.create_a_device = function (req, res) {
   var Product = new ProductModel(ProductModel.findOne({id_product : req.body.id_product}, function(err, doc) {
     if (!err) { res.send(CircularJSON.stringify(doc));}
     else { console.log('Error in Retriving the Product :' + JSON.stringify(err, undefined, 2)); }
@@ -38,13 +39,12 @@ exports.create_a_device = function (req, res) {
     }
     else { console.log('Error in device Save :' + JSON.stringify(err, undefined, 2)); }
   });
-}
+} */
 
 
 exports.update_a_device = function (req,res){
   if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
-
     var device = new deviceModel ({
         mac_address: req.body.mac_address,
         serial_id: req.body.serial_id,
@@ -60,13 +60,24 @@ exports.update_a_device = function (req,res){
 }
 
 exports.delete_a_device = function (req,res){
-/* if (!ObjectId.isValid(req.params.id))
+/* if (!ObjectId.isValid(req.params.device_id))
   return res.status(400).send(`No record with given id : ${req.params.id}`);*/
-
+  var homeID = req.params.home_id;
+  var deviceID = req.params.device_id;
+  console.log('homeID: '+homeID);
+  console.log('deviceID: '+deviceID);
   deviceModel.findByIdAndRemove(req.params.id, (err, doc) => {
-    if (!err) { res.send(doc); }
-    else { console.log('Error in device Delete :' + JSON.stringify(err, undefined, 2)); }
-});
+    if (!err) { res.send(doc);
+      homeModel.findByIdAndUpdate(
+          homeId,
+          {$pull: {'devices': {'_id': deviceID}}},{new: true}, function(err, model){
+          if(err){
+              console.log('ERROR: ' + err);
+          }
+          console.log(model);
+      });
+    
+}});
 }
 
 exports.list_all_devices = function (req,res){
@@ -79,7 +90,6 @@ exports.list_all_devices = function (req,res){
 exports.find_a_device = function (req,res){
   /*if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);*/
-
   deviceModel.findById(req.params.id, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Retriving the device :' + JSON.stringify(err, undefined, 2)); }
@@ -98,7 +108,7 @@ exports.update_device_state = function (req,res){
         if (!err) {
           res.send(doc);
           //redirects to '/api/home/mydevices/:req.params.serial_id'
-				res.redirect(`/api/home/mydevices/:${req.params.id}`);
+				//res.redirect(`/api/homes/:home_id/mydevices/:${req.params.id}`);
         }
         else { console.log('Error in updating the device\'s state :' + JSON.stringify(err, undefined, 2)); }
     });

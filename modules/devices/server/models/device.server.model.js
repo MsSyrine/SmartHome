@@ -34,7 +34,8 @@ var DeviceSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Type"
     //required: 'Fill in the device type'
-  }
+  },
+  home: { type: Schema.ObjectId, ref: 'Home' }
 });
 const Device = mongoose.model('Device', DeviceSchema, 'devices');
 module.exports = Device;

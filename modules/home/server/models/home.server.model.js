@@ -23,26 +23,19 @@ var HomeSchema = new Schema({
     required: 'Please fill in a Label for your home',
     trim: true
   },
-  /* devices:[{ 
-    serial_id: {
-    type: Schema.Types.ObjectId,
-    required: 'Please fill in a device your home', 
-    ref: 'Device' }
-  }], */
   devices: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Device',
-    required: 'Please fill in a device your home'
+  //  required: 'Please fill in a device your home'
   }],
   owners: [{
     user: {
       ref: 'User',
       type: mongoose.Schema.Types.ObjectId,
-      required: 'Fill in an owner'
+  //    required: 'Fill in an owner'
     },
     priority: {
       type: Number,
-      lowercase: true,
       trim: true,
       default: '0'
     },
@@ -62,7 +55,7 @@ var HomeSchema = new Schema({
       default: () => Date.now() + 2160*60*60*1000 // 90 days from now
     } 
   }]
-});
+}, { usePushEach: true });
 const Home = mongoose.model('Home', HomeSchema , 'homes');
 module.exports = Home;
 
