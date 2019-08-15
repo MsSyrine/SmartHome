@@ -22,9 +22,9 @@ homeModel = mongoose.model('Home');
     .get(homeController.getHomeWithDevices);
 
   app.post('/api/homes/:home_id/devices', function(req, res) {
-      let Product = ProductModel.findOne({id_product : req.body.id_product}, function(err, doc) {
+      let Product = ProductModel.findOne({id_product: req.body.id_product}, function(err, doc) {
       if (!err) { 
-        res.send(CircularJSON.stringify(doc));
+        console.log('%j',doc);
         var type = new TypeModel({name_type : req.body.name_type}) ;
         var newDevice  = new deviceModel ({
           mac_address: req.body.mac_address,
@@ -51,8 +51,18 @@ homeModel = mongoose.model('Home');
                       if (err) {
                       console.log('error adding new Device to home');
                       console.log(err);
+                      return res.status(500).json({
+                        status: "Failed",
+                        message: "Database Error",
+                        data: err
+                    });
                       } else {
                       console.log('new Device saved successfully');
+                      return res.status(201).json({
+                        status: "Success",
+                        message: "Resources Are Created Successfully",
+                        data: doc
+                    });
                       // res.redirect('/homes/');
                     }
                   });
@@ -72,13 +82,14 @@ homeModel = mongoose.model('Home');
   //  var userId = 
   let User_test = UserModel.findOne({username: req.body.username}, function(err, doc) {
     if (!err) { 
-  var friend = {doc, priority: '1' , startdate: Date.now(), validuntil: (Date.now() + 2160*60*60*1000) };
+  var friend = {user: doc._doc._id, priority: req.body.priority , startdate: Date.now(), validuntil: (Date.now() + 2160*60*60*1000) };
   console.log('%j', friend);
   
   homeModel.findByIdAndUpdate({_id: homeId}, 
    // { $push: { "owners.user": doc._doc._id, "owners.priority": req.body.priority}} , 
-    {$push: {'owners': {'user._id': doc._doc._id}}},
-      { new: true, safe: true, upsert: true },
+    { $addToSet: {'owners': friend}},
+  //  { $push: { people_seen: person_id, people_liked: person_id }},
+      { new: true ,upsert: true},
       function(err, doc) { 
         if (err) {
         console.log('error adding new User to home');
@@ -86,7 +97,7 @@ homeModel = mongoose.model('Home');
         return res.status(500).json({
           status: "Failed",
           message: "Database Error",
-          data: error
+          data: err
       });
         } else {
         console.log('new user saved successfully');
@@ -104,7 +115,7 @@ homeModel = mongoose.model('Home');
 // list home owners
   app.get('/api/homes/:home_id/owners', homeController.getHomeWithOwners);
 
-  app.route('/api/home/:home_id/devices/:device_id')
+  app.route('/api/home/:home_id/devices/:device_id/')
     .put(deviceController.update_a_device)
     .delete(deviceController.delete_a_device)
     .get(deviceController.find_a_device);
