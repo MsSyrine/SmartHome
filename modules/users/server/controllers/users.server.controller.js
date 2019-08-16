@@ -4,7 +4,7 @@
  * Module dependencies
  */
 var _ = require('lodash'),
-  mongoose  = require('mongoose'),
+  mongoose = require('mongoose'),
   userModel = mongoose.model('User');
 /**
  * Extend user's controller

@@ -125,7 +125,8 @@ var UserSchema = new Schema({
   },
   resetPasswordExpires: {
     type: Date
-  }
+  },
+  home_id: { type: Schema.ObjectId, ref: 'Home' }
 });
 
 /**
