@@ -120,10 +120,9 @@ function seed(doc, options) {
           });
       });
     }
-	//adds product only if not existant
+	  // adds product only if not existant
     function add(skip) {
       return new Promise(function (resolve, reject) {
-
         if (skip) {
           return resolve({
             message: chalk.yellow('Database Seeding: Product\t\t' + doc.product_name+ ' skipped')
@@ -132,12 +131,10 @@ function seed(doc, options) {
 
          //creates a product with the provided doc
 		var product = new Product(doc);
-
           product.save(function (err) {
             if (err) {
               return reject(err);
             }
-
             return resolve({
               message: 'Database Seeding: Product\t\t' + product.product_name + ' added '
             });

@@ -66,18 +66,24 @@ exports.delete_a_device = function (req,res){
   var deviceID = req.params.device_id;
   console.log('homeID: '+homeID);
   console.log('deviceID: '+deviceID);
-  deviceModel.findByIdAndRemove(req.params.id, (err, doc) => {
-    if (!err) { res.send(doc);
-      homeModel.findByIdAndUpdate(
-          homeId,
-          {$pull: {'devices': {'_id': deviceID}}},{new: true}, function(err, model){
-          if(err){
-              console.log('ERROR: ' + err);
-          }
-          console.log(model);
+
+  deviceModel.findByIdAndRemove(deviceID, (err, doc) => {
+    if (!err) { 
+      homeModel.findByIdAndUpdate(homeID, { $pull: { devices:  deviceID  } }, 
+        { new: true },
+      function (err, doc) {
+        if (!err) {
+          res.status(200).send(doc);
+                  } 
+        else {
+          res.render('error', { error: err })
+              }
       });
-    
-}});
+    }
+    else{
+      console.log(err)
+      }
+    });  
 }
 
 exports.list_all_devices = function (req,res){
@@ -113,7 +119,6 @@ exports.update_device_state = function (req,res){
         else { console.log('Error in updating the device\'s state :' + JSON.stringify(err, undefined, 2)); }
     });
 }
-
 
 exports.find_a_device = function (req,res){
   /*if (!ObjectId.isValid(req.params.serial_id))

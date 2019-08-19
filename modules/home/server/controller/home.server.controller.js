@@ -8,15 +8,28 @@ mongoose = require('mongoose'),
 deviceModel = mongoose.model('Device'),
 UserModel = mongoose.model('User'),
 homeModel = mongoose.model('Home');
-
-/* const homeModel = require('../models/home.server.model');
-const UserModel = require('../../../users/server/models/user.server.model');
-const deviceModel = require('../../../devices/server/models/device.server.model'); */
-
-const CircularJSON = require('circular-json');
 /**
  * Home middleware
  */
+exports.list_home = function (req,res){
+  homeModel.findOne({_id : req.params.home_id})
+  .populate([{
+    path: 'owners.user',
+    model: 'User'
+  }, {
+    path: 'devices',
+    model: 'Device'
+}]).sort('-created').exec(function (err, articles) {
+  if (err) {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    });
+  } else {
+    res.json(articles);
+  }
+});
+}
+
 exports.list_homes = function (req,res){
   homeModel.find((err, docs) => {
     if (!err) { res.send(docs); }
@@ -26,9 +39,7 @@ exports.list_homes = function (req,res){
 //the home must be verified with the username
 exports.create_home = function (req, res) {
 let User_test = UserModel.findOne({username: req.body.username}, function(err, doc) {
-    if (!err) { 
-    //  console.log(CircularJSON.stringify(doc));
-    //  console.log("username id******  " + doc._doc._id);    
+    if (!err) {     
   var home = new homeModel ({
     id_home: req.body.id_home,
     home_label: req.body.home_label,
@@ -49,7 +60,6 @@ let User_test = UserModel.findOne({username: req.body.username}, function(err, d
     }
     else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
   });
-
 }
 
 exports.getHomeWithDevices = function ( req, res) {
@@ -96,7 +106,6 @@ exports.homeByID = function (req, res, next, id) {
       message: 'home id is invalid'
     });
   }
-  
   Home.findOne({
     _id: id
   }).exec(function (err, home) {
@@ -105,7 +114,6 @@ exports.homeByID = function (req, res, next, id) {
     } else if (!home) {
       return next(new Error('Failed to load home ' + id));
     }
-  
   req.profile = home;
   next();
   });

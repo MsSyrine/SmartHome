@@ -4,9 +4,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  path = require('path'),
   chalk = require('chalk'),
-  ObjectID = require('mongodb').ObjectID,
   Schema = mongoose.Schema;
 
 var TypeDeviceSchema = new Schema({
@@ -25,9 +23,7 @@ module.exports = mongoose.model('Type', TypeDeviceSchema);
 */
 function seed(doc, options) {
   var Type = mongoose.model('Type');
-
   return new Promise(function (resolve, reject) {
-
     skipDocument()
       .then(findAdminUser)
       .then(add)
@@ -40,12 +36,10 @@ function seed(doc, options) {
 
     function findAdminUser(skip) {
       var User = mongoose.model('User');
-
       return new Promise(function (resolve, reject) {
         if (skip) {
           return resolve(true);
         }
-
         User
           .findOne({
             roles: { $in: ['admin'] }
@@ -54,9 +48,7 @@ function seed(doc, options) {
             if (err) {
               return reject(err);
             }
-
             doc.user = admin;
-
             return resolve();
           });
       });
@@ -72,22 +64,17 @@ function seed(doc, options) {
             if (err) {
               return reject(err);
             }
-
             if (!existing) {
               return resolve(false);
             }
-
             if (existing && !options.overwrite) {
               return resolve(true);
             }
-
             // Remove Type (overwrite)
-
             existing.remove(function (err) {
               if (err) {
                 return reject(err);
               }
-
               return resolve(false);
             });
           });
@@ -101,14 +88,11 @@ function seed(doc, options) {
             message: chalk.yellow('Database Seeding: Type\t' + doc.name_type + ' skipped')
           });
         }
-
         var Type = new Type(doc);
-
         Type.save(function (err) {
           if (err) {
             return reject(err);
           }
-
           return resolve({
             message: 'Database Seeding: Type\t' + Type.name_type + ' added'
           });

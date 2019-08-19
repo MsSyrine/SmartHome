@@ -19,7 +19,7 @@ var HomeSchema = new Schema({
   },
   home_label: {
     type: String,
-    unique: 'Home label already exists',
+  //  unique: 'Home label already exists',
     required: 'Please fill in a Label for your home',
     trim: true
   },
