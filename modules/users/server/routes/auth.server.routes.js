@@ -23,4 +23,4 @@ module.exports = function (app) {
   app.route('/api/auth/:strategy').get(users.oauthCall);
   app.route('/api/auth/:strategy/callback').get(users.oauthCallback);
 
-};4
+};
