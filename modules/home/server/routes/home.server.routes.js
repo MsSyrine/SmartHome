@@ -16,7 +16,7 @@ module.exports = function (app) {
     .get(homeController.list_homes)
     .post(homeController.create_home);
 
-  app.route('/api/homes/:home_id/')
+  app.route('/api/homes/:home_id')
     .get(homeController.list_home);
 
 /*------------Home Devices Management---------------------*/
@@ -76,7 +76,7 @@ module.exports = function (app) {
       });  
     });
   
-  app.route('/api/homes/:home_id/devices/:device_id/')
+  app.route('/api/homes/:home_id/devices/:device_id')
   .put(deviceController.update_a_device)
   .delete(deviceController.delete_a_device)
   .get(deviceController.find_a_device);
