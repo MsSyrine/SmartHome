@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
 var TypeDeviceSchema = new Schema({
   name_type: {
     type: String,
+    unique: true,
     required: 'Fill in a type device name',
     index: true
   }

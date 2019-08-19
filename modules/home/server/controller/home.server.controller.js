@@ -82,6 +82,7 @@ exports.getHomeWithDevices = function ( req, res) {
 }
 
 exports.getHomeWithOwners = function ( req, res) {
+  console.log("params*************** " + req.params.HOME_ID);
   // Find and populate
   var homeId = req.params.home_id;
   homeModel.findOne({_id : homeId})

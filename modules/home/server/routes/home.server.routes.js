@@ -27,7 +27,8 @@ module.exports = function (app) {
       let Product = ProductModel.findOne({id_product: req.body.id_product}, function(err, doc) {
       if (!err) { 
         console.log('%j',doc);
-        var type = new TypeModel({name_type : req.body.name_type}) ;
+        var type = new TypeModel({name_type : req.body.type_device}) ;
+        type.save();
         var newDevice  = new deviceModel ({
           mac_address: req.body.mac_address,
           serial_id: req.body.serial_id,
@@ -141,5 +142,5 @@ module.exports = function (app) {
   });
   });
 
-  app.param('homeId', homeController.homeByID);
+  app.param('HOME_ID', homeController.homeByID);
 };
