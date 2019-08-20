@@ -13,32 +13,33 @@ acl = new acl(new acl.memoryBackend());
  */
 exports.invokeRolesPolicies = function () {
     acl.allow([{
-    roles: ['admin'],
+    roles: ['client'],
     allows: [{
-        resources: '/api/homes',
+        resources: '/api/homes/',
         permissions: '*'
     }, {
         resources: '/api/homes/:home_id',
         permissions: '*'
-    }]
-    }, {
-    roles: ['user'],
-    allows: [{
-        resources: '/api/homes',
-        permissions: ['get']
-    }, {
-        resources: '/api/homes/:home_id',
-        permissions: ['get']
-    }]
-    }, {
-    roles: ['guest'],
-    allows: [{
-        resources: '/api/articles',
-        permissions: ['get']
-    }, {
-        resources: '/api/articles/:articleId',
-        permissions: ['get']
-    }]
+    }
+    , {
+        resources: '/api/homes/:home_id/owners',
+        permissions: '*'
+    }
+    , {
+        resources: '/api/homes/:home_id/devices',
+        permissions: '*'
+    }
+]
+    }
+    , {
+        roles: ['guest'],
+        allows: [{
+            resources: '/api/homes/',
+            permissions: ['get']
+        }, {
+            resources: '/api/homes/:home_id',
+            permissions: ['get']
+        }]
     }]);
 };
 
@@ -47,9 +48,9 @@ exports.invokeRolesPolicies = function () {
  */
 exports.isAllowed = function (req, res, next) {
     var roles = (req.user) ? req.user.roles : ['guest'];
-
   // If an article is being processed and the current user created it then allow any manipulation
-    if (req.article && req.user && req.article.user && req.article.user.id === req.user.id) {
+    console.log("%j" ,req.home );
+    if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
     return next();
     }
 

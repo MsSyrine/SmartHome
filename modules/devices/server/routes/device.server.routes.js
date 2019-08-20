@@ -7,5 +7,5 @@ module.exports = function (app) {
   var home = require('../../../home/server/controller/home.server.controller');
 
   app.param('userId', user.userByID);
-  app.param('homeId', home.homeByID);
+  app.param('homeId', home.homeById);
 }

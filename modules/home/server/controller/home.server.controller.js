@@ -5,7 +5,6 @@
  */
 var path = require('path'),
 mongoose = require('mongoose'),
-errorHandler = require('../../../core/server/controllers/errors.server.controller')
 deviceModel = mongoose.model('Device'),
 UserModel = mongoose.model('User'),
 homeModel = mongoose.model('Home');
@@ -164,38 +163,18 @@ exports.addOwner = function ( req, res) {
         data: err
     });
       } else {
-      console.log('new user saved successfully');
+    //update the user's collection with the homeID
+    UserModel.findByIdAndUpdate({username: req.body.username}, 
+      { $set: {'home_id': homeId}},
+      { new: true} ,{upsert: true});
+    console.log('new user saved successfully');
       return res.status(201).json({
         status: "Success",
         message: "New user is added to owners Successfully",
         data: doc});
     }
     });
-    //update the user's collection with the homeID
-    UserModel.findByIdAndUpdate({username: req.body.username}, 
-      { $set: {'home_id': homeId}},
-      { new: true ,upsert: true},
-      function(err, doc) { 
-        if (err) {
-        console.log('error updating the home ref in User');
-        console.log(err);
-        return res.status(500).json({
-          status: "Failed",
-          message: "error updating the home ref in User",
-          data: err
-        });
-        } else {
-          console.log('user home ref is updated Successfully');
-          return res.status(201).json({
-          status: "Success",
-          message: "user home ref is updated Successfully",
-          data: doc
-          });
-        }
-      });
-  }
-  else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
-});
+}});
 }
 
 exports.getHomeWithOwners = function ( req, res) {
@@ -235,4 +214,4 @@ exports.homeById = function (req, res, next, id) {
   req.profile = home;
   next();
   });
-};
+}

@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
   var homeController = require('../../../home/server/controller/home.server.controller'),
-  var homesPolicy = require('../policies/home.server.policy'),
+  homesPolicy = require('../policies/home.server.policy'),
   deviceController = require('../../../devices/server/controller/device.server.controller'),
   mongoose = require('mongoose');
 
