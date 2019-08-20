@@ -5,13 +5,13 @@ module.exports = function (app) {
   var users = require('../../../users/server/controllers/users.server.controller');
 
   app.route('/api/products/')
-    .get(ProductController.list_products)
-    .post(ProductController.create_a_product);
+    .get(ProductController.listProducts)
+    .post(ProductController.createProduct);
 
-  app.route('/api/products/:id')
-    .put(ProductController.update_a_product)
-    .delete(ProductController.delete_a_product)
-    .get(ProductController.find_a_product_by_id);
+  app.route('/api/products/:product_id')
+    .put(ProductController.updateProduct)
+    .delete(ProductController.deleteProduct)
+    .get(ProductController.findProductById);
 
   app.param('userId', users.userByID);
 };

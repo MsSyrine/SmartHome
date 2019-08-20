@@ -3,12 +3,11 @@
 /**
  * Module dependencies
  */
-var path = require('path'),
-  mongoose = require('mongoose'),
+var mongoose = require('mongoose'),
   ProductModel = mongoose.model('Product');
 
-exports.create_a_product = function (req, res) {
- var product = new ProductModel({
+exports.createProduct = function (req, res) {
+  var product = new ProductModel({
     id_product: req.body.id_product,
     product_name: req.body.product_name,
     image: req.body.image,
@@ -25,10 +24,9 @@ exports.create_a_product = function (req, res) {
   });
 }
 
-exports.update_a_product = function (req, res) {
+exports.updateProduct = function (req, res) {
   /* if (!ObjectId.isValid(req.params.id))
     return res.status(400).send(`No record with given id : ${req.params.id}`);*/
-
   var product = new ProductModel ({
     id_product: req.body.id_product,
     product_name: req.body.product_name,
@@ -38,23 +36,23 @@ exports.update_a_product = function (req, res) {
     stock: req.body.stock,
     price: req.body.price
     });
-  ProductModel.findByIdAndUpdate(req.params.id, { $set : { product_name : req.body.product_name} }, { new: true }, (err, doc) => {
+  ProductModel.findByIdAndUpdate(req.params.product_id, { $set : product} , { new: true }, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Product Update :' + JSON.stringify(err, undefined, 2)); }
   });
 }
 
-exports.delete_a_product = function (req, res) {
+exports.deleteProduct = function (req, res) {
 /*   if (!ObjectId.isValid(req.params.id))
   return res.status(400).send(`No record with given id : ${req.params.id}`); */
 
-  ProductModel.findByIdAndRemove(req.params.id, (err, doc) => {
+  ProductModel.findByIdAndRemove(req.params.product_id, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Product Delete :' + JSON.stringify(err, undefined, 2)); }
   });
 };
 
-exports.list_products = function (req, res) {
+exports.listProducts = function (req, res) {
   ProductModel.find((err, docs) => {
   if (!err) {
     res.send(docs);
@@ -63,10 +61,10 @@ exports.list_products = function (req, res) {
   });
 }
 
-exports.find_a_product_by_id = function (req,res){
+exports.findProductById = function (req,res){
 /*   if (!ObjectId.isValid(req.params.id))
     return res.status(400).send(`No record with given id : ${req.params.id}`); */
-  ProductModel.findById(req.params.id, (err, doc) => {
+  ProductModel.findById(req.params.product_id, (err, doc) => {
     if (!err) { res.send(doc); }
     else { console.log('Error in Retriving the product :' + JSON.stringify(err, undefined, 2)); }
   });
