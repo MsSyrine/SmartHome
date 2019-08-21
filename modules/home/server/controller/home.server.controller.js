@@ -13,9 +13,9 @@ homeModel = mongoose.model('Home');
  */
 
 exports.listHomes = function (req,res){
-  homeModel.find((err, docs) => {
-    if (!err) { res.send(docs); }
-    else { console.log('Error in Retriving home details :' + JSON.stringify(err, undefined, 2)); }
+  homeModel.find((err, homes) => {
+    if (!err) { res.send(homes); }
+    else { console.log('Error in Retriving homes :' + JSON.stringify(err, undefined, 2)); }
   });
 }
 
@@ -40,7 +40,9 @@ exports.listHome = function (req,res){
 
 //specify the main owner when creating the home 
 exports.createHome = function (req, res) {
+  console.log('req.body.username' + req.body.username);
 let User_test = UserModel.findOne({username: req.body.username}, function(err, doc) {
+  console.log('%j',doc);
     if (!err) {     
   var home = new homeModel ({
     id_home: req.body.id_home,

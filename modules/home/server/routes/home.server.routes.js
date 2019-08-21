@@ -7,7 +7,7 @@ module.exports = function (app) {
   mongoose = require('mongoose');
 
 /*------------Home Management---------------------*/
-  app.route('/api/homes/').all(homesPolicy.isAllowed)
+  app.route('/api/homes/')
     .get(homeController.listHomes)
     .post(homeController.createHome);
 
