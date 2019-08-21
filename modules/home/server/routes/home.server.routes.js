@@ -11,7 +11,7 @@ module.exports = function (app) {
     .get(homeController.listHomes)
     .post(homeController.createHome);
 
-  app.route('/api/homes/:homeId')
+  app.route('/api/homes/:homeId').all(homesPolicy.isAllowed)
     .get(homeController.listHome);
 
 /*------------Home Devices Management---------------------*/
