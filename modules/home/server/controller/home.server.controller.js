@@ -13,9 +13,9 @@ homeModel = mongoose.model('Home');
  */
 
 exports.listHomes = function (req,res){
-  homeModel.find((err, docs) => {
-    if (!err) { res.send(docs); }
-    else { console.log('Error in Retriving home details :' + JSON.stringify(err, undefined, 2)); }
+  homeModel.find((err, homes) => {
+    if (!err) { res.send(homes); }
+    else { console.log('Error in Retriving homes :' + JSON.stringify(err, undefined, 2)); }
   });
 }
 
@@ -40,8 +40,11 @@ exports.listHome = function (req,res){
 
 //specify the main owner when creating the home 
 exports.createHome = function (req, res) {
+  console.log('req.body.username' + req.body.username);
 let User_test = UserModel.findOne({username: req.body.username}, function(err, doc) {
-    if (!err) {     
+  console.log('%j',doc);
+    if (!err) { 
+  var userId = doc._doc._id;     
   var home = new homeModel ({
     id_home: req.body.id_home,
     home_label: req.body.home_label,
@@ -52,14 +55,26 @@ let User_test = UserModel.findOne({username: req.body.username}, function(err, d
   });   
       home.save((err, doc) => {
         if (!err) {
-          res.json(doc);
           console.log('Home saved! ' + home);
+          //update the user's collection with the homeID
+          UserModel.findByIdAndUpdate(userId, 
+          { $set: {'home_id': home._id}},
+          { new: true} ,{upsert: true});
+          return res.status(201).json({
+            status: "Success",
+            message: "Resources Are Created Successfully",
+            data: doc
+          });  
         }
         else {
           console.log('Error in home Saving :' + JSON.stringify(err, undefined, 2)); }
-          res.json(err);
+          return res.status(500).json({
+            status: "Failed",
+            message: "Database Error",
+            data: err
+          });
     });
-      return doc;
+ //     return doc;
     }
     else { console.log('Error in Retriving the User :' + JSON.stringify(err, undefined, 2)); }
   });
@@ -113,7 +128,6 @@ exports.addDevices = function ( req, res)  {
                         message: "Resources Are Created Successfully",
                         data: doc
                       });
-                    // res.redirect('/homes/');
                     }
                 });
             });
@@ -148,6 +162,7 @@ exports.addOwner = function ( req, res) {
   var homeId = req.params.homeId; 
   let User_test = UserModel.findOne({username: req.body.username}, function(err, doc) {
   if (!err) { 
+    var userId = doc._doc._id; 
     var friend = {user: doc._doc._id, priority: req.body.priority , startdate: Date.now(), validuntil: (Date.now() + 2160*60*60*1000) };
     console.log('%j', friend);
     homeModel.findByIdAndUpdate({_id: homeId}, 
@@ -164,7 +179,7 @@ exports.addOwner = function ( req, res) {
     });
       } else {
     //update the user's collection with the homeID
-    UserModel.findByIdAndUpdate({username: req.body.username}, 
+    UserModel.findByIdAndUpdate(userId, 
       { $set: {'home_id': homeId}},
       { new: true} ,{upsert: true});
     console.log('new user saved successfully');
