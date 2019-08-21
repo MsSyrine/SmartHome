@@ -126,7 +126,9 @@ var UserSchema = new Schema({
   resetPasswordExpires: {
     type: Date
   },
-  home_id: { type: Schema.ObjectId, ref: 'Home' }
+  home_id: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Home' }
 });
 
 /**

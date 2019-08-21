@@ -35,7 +35,7 @@ exports.invokeRolesPolicies = function () {
         roles: ['client'],
         allows: [{
             resources: '/api/homes/',
-            permissions: ['get','post']
+            permissions: ['post']
         }, {
             resources: '/api/homes/:home_id',
             permissions: ['*']
@@ -47,12 +47,11 @@ exports.invokeRolesPolicies = function () {
  * Check If Articles Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
-    // console.log("%j" ,req.user );
+    console.log("%j" ,req.user );
     var roles = (req.user) ? req.user.roles : ['guest'];
   // If an article is being processed and the current user created it then allow any manipulation
     console.log("%j" ,req.home );
     //if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
-
     if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
             return next();
     }
