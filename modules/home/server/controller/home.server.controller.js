@@ -203,7 +203,7 @@ exports.homeById = function (req, res, next, id) {
       message: 'home id is invalid'
     });
   }
-  Home.findOne({
+homeModel.findOne({
     _id: id
   }).exec(function (err, home) {
     if (err) {
