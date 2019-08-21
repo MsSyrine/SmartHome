@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
   var BlogController = require('../controller/blog.server.controller'),
-  users = require('../../../users/server/controllers/users.server.controller.js');
+  users = require('../../../users/server/controllers/users.server.controller');
 
   app.route('/api/blog/add').get(BlogController.AddBlog);
   app.route('/api/blog/update').put(BlogController.UpdateBlog);

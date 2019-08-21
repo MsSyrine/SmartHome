@@ -25,7 +25,7 @@ exports.signup = function (req, res) {
   // Init user and add missing fields
   var user = new User(req.body);
   user.provider = 'local';
-  // user.displayName = user.firstName + ' ' + user.lastName;
+  user.displayName = user.firstName + ' ' + user.lastName;
 
   // Then save the user
   user.save(function (err) {
@@ -54,6 +54,8 @@ exports.signup = function (req, res) {
 exports.signin = function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
     if (err || !user) {
+      console.log('%j',user);
+      console.log('%j', info);
       res.status(422).send(info);
     } else {
       // Remove sensitive data before login
