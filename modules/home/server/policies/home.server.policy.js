@@ -3,7 +3,9 @@
 /**
  * Module dependencies
  */
-var acl = require('acl');
+var acl = require('acl'),
+mongoose = require('mongoose'),
+homeModel = mongoose.model('Home');
 
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
@@ -18,15 +20,15 @@ exports.invokeRolesPolicies = function () {
         resources: '/api/homes/',
         permissions: '*'
     }, {
-        resources: '/api/homes/:home_id',
+        resources: '/api/homes/:homeId',
         permissions: '*'
     }
     , {
-        resources: '/api/homes/:home_id/owners',
+        resources: '/api/homes/:homeId/owners',
         permissions: '*'
     }
     , {
-        resources: '/api/homes/:home_id/devices',
+        resources: '/api/homes/:homeId/devices',
         permissions: '*'
     }
 ]
@@ -37,7 +39,7 @@ exports.invokeRolesPolicies = function () {
             resources: '/api/homes/',
             permissions: ['post']
         }, {
-            resources: '/api/homes/:home_id',
+            resources: '/api/homes/:homeId',
             permissions: ['*']
         }]
     }]);
@@ -48,14 +50,13 @@ exports.invokeRolesPolicies = function () {
  */
 exports.isAllowed = function (req, res, next) {
     console.log("%j" ,req.user );
+   // console.log("home_id user" + req.user.home_id);
     var roles = (req.user) ? req.user.roles : ['guest'];
-  // If an article is being processed and the current user created it then allow any manipulation
-    console.log("%j" ,req.home );
-    //if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
+    console.log("%j" ,req.params.homeId );
+  // If a home  is being processed and the current user created it then allow any manipulation    
     if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
             return next();
     }
-
   // Check for user roles
     acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
     if (err) {

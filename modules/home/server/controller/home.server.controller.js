@@ -3,8 +3,7 @@
 /**
  * Module dependencies
  */
-var path = require('path'),
-mongoose = require('mongoose'),
+var mongoose = require('mongoose'),
 deviceModel = mongoose.model('Device'),
 UserModel = mongoose.model('User'),
 homeModel = mongoose.model('Home');

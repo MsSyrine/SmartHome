@@ -6,3 +6,6 @@
 }
 
 //http://localhost:3000/api/auth/signin
+
+//to sign out send get to 
+// /api/auth/signout
