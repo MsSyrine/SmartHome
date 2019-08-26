@@ -54,9 +54,9 @@ exports.isAllowed = function (req, res, next) {
     var roles = (req.user) ? req.user.roles : ['guest'];
     console.log("%j" ,req.params.homeId );
   // If a home  is being processed and the current user created it then allow any manipulation    
-    if (req.home && req.user && req.home.owners.user && req.home.owners.user.id === req.user.id) {
+/*     if (req.params.homeId && req.user && req.params.homeId === req.user.home_id) {
             return next();
-    }
+    } */
   // Check for user roles
     acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
     if (err) {
